@@ -96,7 +96,7 @@ function buildPersonaListItem(persona, active) {
         $('<div class="col-xs-1"/>').text(persona["level"])).append( 
         $('<div class="col-xs-1"/>').text(persona["hp"])).append( 
         $('<div class="col-xs-1"/>').text(persona["sp"])).append(
-        $('<div class="col-xs-3"/>').append(
+        $('<div class="col-xs-3 text-right"/>').append(
             $('<div class="dropdown"/>').append(
                 $('<button class="btn btn-primary btn-xs" data-toggle="dropdown" aria-expanded="false"/>').text('Skills ').append(
                     $('<li class="caret"/>'))).append(
