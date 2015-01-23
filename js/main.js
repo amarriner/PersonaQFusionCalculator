@@ -7,7 +7,7 @@ function activate(json) {
     personaQ = json;
     
     $.each(personaQ["arcana"].sort(), function(i) {
-        $("#arcana-navbar").append($("<li/>").append($('<a href="#" onclick="buildModal(\'' + this + '\');"/>').text(this)));
+        $("#arcana-navbar").append($("<li/>").append($('<a href="#" onclick="buildArcanaModal(\'' + this + '\');"/>').text(this)));
     });
     
     $("#persona3").append($("<option />").val("").text("NONE"));
@@ -39,7 +39,7 @@ function fuse() {
  * Building HTML component functions
  */
 
-function buildModal(arcana) {
+function buildArcanaModal(arcana) {
     $("#arcana-modal-label").text(arcana + " Arcana");
     
     var personas = new Array();
@@ -56,6 +56,16 @@ function buildModal(arcana) {
     console.log(' - Showing modal');
     $("#arcana-modal").modal('show');
     return false;
+}
+
+function buildPersonaModal() {
+    $("#arcana-modal-label").text("Persona List");
+ 
+    buildPersonaList("", personaQ["personas"].sort(personaSortNameAsc), "", "#arcana-modal-body");
+    
+    console.log(' - Showing modal');
+    $("#arcana-modal").modal('show');
+    return false;   
 }
 
 function buildPersonaList(arcana, personas, active, elementId, title) {
