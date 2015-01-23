@@ -32,10 +32,20 @@
     <nav id="navbar-persona" class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
           <a class="navbar-brand" href="#">Persona Q Fusion Calculator</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
+              <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Arcana <span class="caret"></span></a>
+                  <ul id="arcana-navbar" class="dropdown-menu" role="menu"></ul>
+              </li>
           </ul>
         </div>
         <div id="credits" class="text-right"> <span><small>
@@ -84,6 +94,20 @@
 
     </div>
       
+      
+      <div class="modal fade" id="arcana-modal" tabindex="-1" role="dialog" aria-labelledby="arcana-modal-label" aria-hidden="true">
+          <div class="modal-dialog">
+              <div class="modal-content panel panel-info">
+                  <div class="modal-header panel-heading">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>    
+                      <h4 class="modal-title" id="arcana-modal-label">Arcana</h4>
+                  </div>
+                  <div id="arcana-modal-body" class="modal-body panel-body">
+                  </div>
+              </div>
+          </div>
+      </div>
+           
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>

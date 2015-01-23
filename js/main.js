@@ -6,6 +6,10 @@ var personaQ;
 function activate(json) {
     personaQ = json;
     
+    $.each(personaQ["arcana"].sort(), function(i) {
+        $("#arcana-navbar").append($("<li/>").append($('<a href="#" onclick="buildModal(\'' + this + '\');"/>').text(this)));
+    });
+    
     $("#persona3").append($("<option />").val("").text("NONE"));
     $.each(personaQ["personas"].sort(personaSortNameAsc), function() {
       $("#persona1").append($("<option />").val(this["name"]).text(this["name"]));
@@ -23,15 +27,9 @@ function fuse() {
     var p3 = getPersonaByName($("#persona3").val());
     
     if (p1 != p2 && ! p3) {
-//        $("#fusion-result").html(
-//            personaQ["arcana"][getNormalFusion(p1, p2)]
-//        );
         getNormalFusion(p1, p2);
     }
     else if (p1 && p2 && p3 && (p1 != p2 && p1 != p3 && p2 != p3)) {
-//        $("#fusion-result").html(
-//            personaQ["arcana"][getTripleFusion(p1, p2, p3)]
-//        );
         getTripleFusion(p1, p2, p3);
     }
 
@@ -41,15 +39,34 @@ function fuse() {
  * Building HTML component functions
  */
 
-function buildPersonaList(arcana, personas, active) {
+function buildModal(arcana) {
+    $("#arcana-modal-label").text(arcana + " Arcana");
+    
+    var personas = new Array();
+    $.each(personaQ["personas"], function(i) {
+        if (this["arcana"] == personaQ["arcana"].indexOf(arcana)) {
+            console.log(' - Adding ' + this["name"] + " to modal");
+            //$("#arcana-modal-body").append($("<div/>").text(this["name"]));
+            personas.push(this);
+        }
+    });
+    
+    buildPersonaList(personaQ["arcana"].indexOf(arcana), personas, "", "#arcana-modal-body");
+    
+    console.log(' - Showing modal');
+    $("#arcana-modal").modal('show');
+    return false;
+}
+
+function buildPersonaList(arcana, personas, active, elementId, title) {
     var activeClass = " list-group-item-info";
     
-    $("#fusion-result").html("");
+    $(elementId).html("");
     
-    $("#fusion-result").append(
+    $(elementId).append(
         $('<ul class="list-group"/>').append(
             $('<li class="row list-group-item active"/>').append($('<div class="row"/>').append(
-                $('<div class="col-xs-7"/>').text("Arcana: " + personaQ["arcana"][arcana])).append( 
+                $('<div class="col-xs-7"/>').text(title == true ? "Arcana: " + personaQ["arcana"][arcana] : "")).append( 
                 $('<div class="col-xs-1"/>').text('Lvl')).append(
                 $('<div class="col-xs-1"/>').text('HP')).append( 
                 $('<div class="col-xs-1"/>').text('SP'))
@@ -58,7 +75,7 @@ function buildPersonaList(arcana, personas, active) {
     );
             
     $.each($(personas), function(i) {        
-        $("#fusion-result ul:first").append(buildPersonaListItem(this, (active == this["name"] ? activeClass : "")));
+        $(elementId + " ul:first").append(buildPersonaListItem(this, (active == this["name"] ? activeClass : "")));
     });
 }
 
@@ -106,7 +123,7 @@ function getFusion(a, b, type) {
     console.log("Getting [" + type + "] fusion for arcana: " + personaQ["arcana"][a] + ", " + personaQ["arcana"][b]);
     var r = false;
 
-    if (a != b) {
+    if (a != b || a == b) {
         $.each(personaQ["fusions"][type], function() {
             
             if ($.inArray(a, this["arcana"]) >= "0" && $.inArray(b, this["arcana"]) >= "0") {
@@ -147,7 +164,7 @@ function getNormalFusion(a, b) {
         if (personas.length > 0) {
             console.log(" - Outputting personas");
             
-            buildPersonaList(arcana, personas, active);
+            buildPersonaList(arcana, personas, active, "#fusion-result", true);
         }
     }
     
@@ -184,7 +201,7 @@ function getTripleFusion(a, b, c) {
         if (personas.length > 0) {
             console.log(" - Outputting personas");
             
-            buildPersonaList(arcana, personas, active);
+            buildPersonaList(arcana, personas, active, "#fusion-result", true);
         }
     }
     
@@ -194,6 +211,7 @@ function getTripleFusion(a, b, c) {
 /*
  * Sorting Functions
  */
+
 function personaSortArcanaAsc(a, b) {
     return a["arcana"] - b["arcana"];
 }
