@@ -77,7 +77,7 @@ function buildPersonaList(arcana, personas, active, elementId, title) {
     $(elementId).append(
         $('<ul class="list-group"/>').append(
             $('<li class="row list-group-item active"/>').append($('<div class="row"/>').append(
-                $('<div class="col-xs-6"/>').text(title == true ? "Arcana: " + personaQ["arcana"][arcana] : "")).append( 
+                $('<div class="col-xs-4 col-md-6"/>').text(title == true ? "Arcana: " + personaQ["arcana"][arcana] : "")).append( 
                 $('<div class="col-xs-1"/>').text('Lvl')).append(
                 $('<div class="col-xs-1"/>').text('HP')).append( 
                 $('<div class="col-xs-1"/>').text('SP'))
@@ -92,7 +92,7 @@ function buildPersonaList(arcana, personas, active, elementId, title) {
 
 function buildPersonaListItem(persona, active) {
     var item = $('<li class="row list-group-item' + active + '"/>').append(
-        $('<div class="col-xs-6"/>').text(persona["name"])).append(
+        $('<div class="col-xs-4 col-md-6"/>').text(persona["name"])).append(
         $('<div class="col-xs-1"/>').text(persona["level"])).append( 
         $('<div class="col-xs-1"/>').text(persona["hp"])).append( 
         $('<div class="col-xs-1"/>').text(persona["sp"])).append(
