@@ -47,7 +47,7 @@ body {
 
 #bg-bar div.bg-bar-top {
     background-image: url(../images/bar.png);
-    background-repeat: no-repeat;
+    background-repeat: repeat-x;
     height: 150px;
     left: 0;
     margin: 0;
@@ -60,7 +60,7 @@ body {
 
 #bg-bar div.bg-bar-left {
     background-image: url(../images/p3mc.png);
-    background-position: -25px 55px;
+    background-position: -25px 65px;
     background-repeat: no-repeat;
     height: 100%;
     left: 0;
@@ -73,7 +73,7 @@ body {
 
 #bg-bar div.bg-bar-right {
     background-image: url(../images/p4mc.png);
-    background-position: 5px 55px;
+    background-position: 5px 65px;
     background-repeat: no-repeat;
     height: 100%;
     margin: 0;
@@ -109,7 +109,15 @@ body {
 }
 
 #navbar-persona #navbar {
-    /* float: left; */
+    /* float: left; */    
+}
+
+#navbar ul li a, #navbar ul li a:visited, #navbar ul li a:active {
+    color: #a05b9f;
+}
+
+#navbar ul li a:hover {
+    color: #cf34cd;
 }
 
 #arcana-modal-body ul {
