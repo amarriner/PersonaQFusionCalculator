@@ -1,15 +1,30 @@
 var personaQ;
 
 /*
- * Build controls after loading JSON
+ * Build search controls after loading JSON
  */ 
-function activateSearch(json) {
-    personaQ = json;
+function activateSearch(json) {    
+    if (typeof json != "undefined") {
+        personaQ = json;
+    }
     
-    $("#arcana-navbar").html("");
-    $.each(personaQ["arcana"].sort(), function(i) {
-        $("#arcana-navbar").append($("<li/>").append($('<a href="#" onclick="buildArcanaModal(\'' + this + '\');"/>').text(this)));
-    });
+    $("#select").empty();
+    
+    $("#select").append($('<div class="panel-heading"/>'));
+    $("#select div.panel-heading").append($('<h3 class="panel-title"/>'));
+    $("#select div.panel-heading h3.panel-title").append($('<span class="glyphicon glyphicon-search" aria-hidden="true"/>')).append("Select up to three Personas");
+    $("#select").append($('<div class="panel-body"/>'));
+    $("#select div.panel-body").append($('<div class="row"/>'));
+    
+    for (var k = 1; k <= 3; k++) {
+        $("#select div.panel-body div.row").append($('<div id="p' + k + '" class="form-group col-md-4"/>'));
+        $("#select div.panel-body div.row #p" + k).append($('<label for="persona' + k + '"/>').text("Persona " + k));
+        $("#select div.panel-body div.row #p" + k).append($('<select id="persona' + k + '" class="form-control" />'));
+    }
+    
+    $("#persona1").change(function() { fuse(); } );
+    $("#persona2").change(function() { fuse(); } );
+    $("#persona3").change(function() { fuse(); } );
     
     $("#persona3").append($("<option />").val("").text("NONE"));
     $.each(personaQ["personas"].sort(personaSortNameAsc), function() {
@@ -240,19 +255,61 @@ function personaSortLevelDesc(a, b) {
 }
 
 function personaSortNameAsc(a, b) {
-    return a["name"].charCodeAt(0) - b["name"].charCodeAt(0);
-}
-
-function personaSortNameDesc(a, b) {
-    return b["name"].charCodeAt(0) - a["name"].charCodeAt(0);
-}
-
-function skillSortNameAsc(a, b) {
-    var end = Math.min(a.length, b.length);
+    var end = Math.min(a["name"].length, b["name"].length);
     var ndx = -1;
     
     for (var i = 0; i < end; i++) {
-        if (personaQ["skills"][a][i] != personaQ["skills"][b][i]) {
+        if (a["name"][i] != b["name"][i] && ndx == -1) {
+            ndx = i;
+        }
+    }
+    
+    if (ndx == -1) {
+        ndx = end;
+        
+        if (a.length <= ndx) {
+            a.push(" ");
+        }
+        
+        if (b.length <= ndx) {
+            b.push(" ");
+        }
+    }
+    
+    return a["name"].charCodeAt(ndx) - b["name"].charCodeAt(ndx);
+}
+
+function personaSortNameDesc(a, b) {
+    var end = Math.min(a["name"].length, b["name"].length);
+    var ndx = -1;
+    
+    for (var i = 0; i < end; i++) {
+        if (a["name"][i] != b["name"][i] && ndx == -1) {
+            ndx = i;
+        }
+    }
+    
+    if (ndx == -1) {
+        ndx = end;
+        
+        if (a.length <= ndx) {
+            a.push(" ");
+        }
+        
+        if (b.length <= ndx) {
+            b.push(" ");
+        }
+    }
+    
+    return b["name"].charCodeAt(ndx) - a["name"].charCodeAt(ndx);
+}
+
+function skillSortNameAsc(a, b) {
+    var end = Math.min(personaQ["skills"][a].length, personaQ["skills"][b].length);
+    var ndx = -1;
+    
+    for (var i = 0; i < end; i++) {
+        if (personaQ["skills"][a][i] != personaQ["skills"][b][i] && ndx == -1) {
             ndx = i;
         }
     }
@@ -272,6 +329,8 @@ function skillSortNameAsc(a, b) {
     return personaQ["skills"][a].charCodeAt(ndx) - personaQ["skills"][b].charCodeAt(ndx);
 }
 
+function sortFindIndex(a, b) {
+}
 
 function sortPersonas(a, b, c) {
     console.log("Sorting " + a["name"] + ", " + b["name"] + ", " + c["name"]);

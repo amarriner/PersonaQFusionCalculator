@@ -44,6 +44,10 @@
                 
                 <div id="navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
+                        <li>
+                            <a href="#" onclick="activateSearch();">
+                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search</a>
+                        </li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                 <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Arcana <span class="caret"></span></a>
@@ -74,33 +78,7 @@
           
             <div id="personaQ">
                 <div id="select" class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
-                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 
-                            Select up to three Personas
-                        </h3>
-                    </div>
-                
-                    <div class="panel-body">
-                        <div class="row">
-                
-                            <div class="form-group col-md-4">
-                                <label for="persona1">Persona 1</label>
-                                <select name="persona1" id="persona1" class="form-control"></select>
-                            </div>
-            
-                            <div class="form-group col-md-4">
-                                <label for="persona2">Persona 2</label>
-                                <select name="persona2" id="persona2" class="form-control"></select>
-                            </div>
-            
-                            <div class="form-group col-md-4">
-                                <label for="persona3">Persona 3</label>
-                                <select name="persona3" id="persona3" class="form-control"></select>
-                            </div>
-                        </div>
-                    </div>
-         
+                    <div class="panel-body">Loading...</div>
                 </div>
             
                 <div id="fusion-result">
@@ -131,13 +109,15 @@
         <script type="text/javascript">
 
             $(document).ready(function() {
+                
                 $.getJSON("js/persona-q.json", function(json) {
                     activateSearch(json);
+                    
+                    $("#arcana-navbar").html("");
+                    $.each(personaQ["arcana"].sort(), function(i) {
+                        $("#arcana-navbar").append($("<li/>").append($('<a href="#" onclick="buildArcanaModal(\'' + this + '\');"/>').text(this)));
+                    });
                 });
-    
-                $("#persona1").change(function() { fuse(); } );
-                $("#persona2").change(function() { fuse(); } );
-                $("#persona3").change(function() { fuse(); } );
             });
 
             (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
