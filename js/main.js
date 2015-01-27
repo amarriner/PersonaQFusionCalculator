@@ -13,8 +13,9 @@ function activateSearch(json) {
     
     $("#select").append($('<div class="panel-heading"/>'));
     $("#select div.panel-heading").append($('<h3 class="panel-title"/>'));
-    $("#select div.panel-heading h3.panel-title").append($('<span class="glyphicon glyphicon-search" aria-hidden="true"/>')).append("Select up to three Personas");
+    $("#select div.panel-heading h3.panel-title").append($('<span class="glyphicon glyphicon-search" aria-hidden="true"/>')).append(" Search");
     $("#select").append($('<div class="panel-body"/>'));
+    $("#select div.panel-body").append(exclaim("Select up to three personas"));
     $("#select div.panel-body").append($('<div class="row"/>'));
     
     for (var k = 1; k <= 3; k++) {
@@ -48,8 +49,9 @@ function activateIngredients() {
     
     $("#select").append($('<div class="panel-heading"/>'));
     $("#select div.panel-heading").append($('<h3 class="panel-title"/>'));
-    $("#select div.panel-heading h3.panel-title").append($('<span class="glyphicon glyphicon-search" aria-hidden="true"/>')).append("Select a Persona");
+    $("#select div.panel-heading h3.panel-title").append($('<span class="glyphicon glyphicon-search" aria-hidden="true"/>')).append(" Ingredients");
     $("#select").append($('<div class="panel-body"/>'));
+    $("#select div.panel-body").append(exclaim("Find fusion ingredients for a Persona"));
     $("#select div.panel-body").append($('<div class="row"/>'));
     
     $("#select div.panel-body div.row").append($('<div id="f-top" class="form-group col-md-12"/>'));
@@ -60,6 +62,70 @@ function activateIngredients() {
     
     $.each(personaQ["personas"].sort(personaSortNameAsc), function() {
         $("#fused").append($("<option />").val(this["name"]).text(this["name"]));
+    });
+    
+    $("#select div.panel-body").append(
+        $('<div class="row text-center"/>').append(
+            $('<strong class="text-info"/>').text(" This function is very much a work in progress! ").prepend(
+                $('<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"/>')
+            ).append(
+                $('<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"/>')
+            )
+        )
+    );
+    
+    getCredits();
+}
+
+/*
+ * Build list of personas
+ */
+function activatePersonas() {
+    $("#select").empty();
+    $("#fusion-result").empty();
+    
+    $("#select").append($('<div class="panel-heading"/>'));
+    $("#select div.panel-heading").append($('<h3 class="panel-title"/>'));
+    $("#select div.panel-heading h3.panel-title").append($('<span class="glyphicon glyphicon-th-list" aria-hidden="true"/>')).append("   Persona List");
+    $("#select").append($('<div class="panel-body"/>'));
+    
+    var letters = new Object();
+    $.each(personaQ["personas"].sort(personaSortNameAsc), function(i) {
+        if (! letters[this["name"][0]]) {
+            letters[this["name"][0]] = new Array();
+        }
+        
+        letters[this["name"][0]].push(this);
+    });
+    
+    $("#select div.panel-body").append($('<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true"/>'));
+                                       
+    $.each(letters, function(i, value) {
+        
+        var element = $('<div class="panel panel-default"/>');
+        $(element).append(
+            $('<div class="panel-heading" role="tab" id="tab-' + i + '"/>').append(
+                $('<h4 class="panel-title"/>').append(
+                    $('<a data-toggle="collapse" data-parent="#accordion" href="#collapse' + i + '" aria-controls="collapse' + i + '"/>').text(i)
+                )
+            )
+        ).append(
+            $('<div id="collapse' + i + '" class="panel-collapse collapse" role="tabpanel aria-labelleyby="tab-' + i + '"/>').append(
+                $('<ul id="personas' + i + '" class="panel-body list-group"/>')
+            )
+        );
+
+        $("#accordion").append(element);
+        
+        $.each(value, function(j, persona) {
+            $("#personas" + i).append(buildPersonaListItem(persona, ""));
+        });
+    });
+    
+    getCredits();
+    
+    $("#accordion div.panel div.panel-heading h4.panel-title a").click(function() {
+        $(this).parent().parent().parent().toggleClass("panel-info");
     });
 }
 
@@ -93,21 +159,42 @@ function getIngredients() {
     $("#fusion-result").empty();
     
     var persona = getPersonaByName($("#fused").val());
-    // console.log("Finding ingredients for " + persona["name"]);
+    console.log("Finding ingredients for " + persona["name"]);
     
-    setTimeout(function() {
-        $.each(personaQ["personas"], function(i, first) {
-            $.each(personaQ["personas"], function(j, second) {
-                personas = getNormalFusion(first, second);
-            
-                if (personas) {
-                    if (personas.indexOf(persona) >= 0) {
-                        console.log("Found matching fusion for " + first["name"] + " and " + second["name"]);
-                    }
-                }
-            });
+    var results = new Array();
+    $.each(personaQ["fusions"]["normal"], function(i, value) {
+        if (this["result"] == persona["arcana"]) {
+            results.push(this);    
+        }
+    });
+    
+    if (results.length > 0) {
+        console.log("Found results");
+        
+        $("#fusion-result").append(
+            $('<ul class="list-group"/>').append(
+                $('<li class="row list-group-item active"/>').append(
+                    $('<div class="row"/>').append(
+                        $('<div class="col-xs-12"/>').append(
+                            $('<span class="hidden-xs"/>').text('Arcana: ').add(
+                                $("<span/>").text(personaQ["arcana"][persona["arcana"]])
+                            )
+                        )
+                    )
+                )
+            )
+        );
+        
+        $.each(results, function(i) {
+            $("#fusion-result ul.list-group:first").append(
+                $('<li class="row list-group-item"/>').append(
+                    $('<div class="col-md-6"/>').text(personaQ["arcana"][this["arcana"][0]])
+                ).append(
+                    $('<div class="col-md-6"/>').text(personaQ["arcana"][this["arcana"][1]])
+                )
+            );
         });
-    }, 0);
+    }
 }
 
 /*
@@ -187,6 +274,17 @@ function buildPersonaListItem(persona, active) {
     });
     
     return item
+}
+
+function exclaim(str) {
+    var element = $('<p class="exclaim bg-info text-info"/>');
+    $(element).append($('<strong/>'));
+    $(element).find("strong").text(" " + str);
+    $(element).find("strong").prepend(
+        $('<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"/>')
+    );
+    
+    return element;
 }
 
 /*

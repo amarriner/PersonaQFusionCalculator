@@ -122,10 +122,29 @@ body {
     color: #cf34cd;
 }
 
+#accordion div.panel-heading h4.panel-title a {
+    display: block;
+    font-weight: bold;
+}
+
+#accordion div.panel-heading h4.panel-title a:hover {
+    /* background-color: #a05b9f; */
+}
+
+#accordion ul.panel-body {
+    padding-bottom: 0;
+    padding-top: 0;
+}
+
 #arcana-modal-body ul {
     margin-left: auto;
     margin-right: auto;
     width: 90%;
+}
+
+.exclaim {
+    border-radius: 4px;
+    padding: 5px;
 }
 
 .list-group-item-info {

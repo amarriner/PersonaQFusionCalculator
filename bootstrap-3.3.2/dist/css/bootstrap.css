@@ -5125,7 +5125,7 @@ a.thumbnail.active {
   display: block;
   padding: 10px 15px;
   margin-bottom: -1px;
-  background-color: #fff;
+  background-color: #f9f9f9;
   border: 1px solid #ddd;
 }
 .list-group-item:first-child {
