@@ -124,9 +124,14 @@ function activatePersonas() {
     
     getCredits();
     
-    $("#accordion div.panel div.panel-heading h4.panel-title a").click(function() {
+   $("#accordion div.panel div.panel-heading h4.panel-title a").click(function() {
         $(this).parent().parent().parent().toggleClass("panel-info");
     });
+        
+    $("#accordion").on("hidden.bs.collapse", function() { 
+        $('#accordion div.panel div[aria-expanded="false"]').parent().removeClass("panel-info");
+    });
+
 }
 
 function getCredits() {
