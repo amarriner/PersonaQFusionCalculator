@@ -60,6 +60,8 @@
                             </ul>
                         </li>
                         <li><a href="#" onclick="activatePersonas();"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Personas</a></li>
+                        <li><a href="#" onclick="activateSkills();"><span class="glyphicon glyphicon-fire" aria-hidden="true"></span> Skills</a></li>
+
                     </ul>
                 </div>
         
@@ -76,8 +78,9 @@
                 <div id="fusion-result">
                 </div>
             </div>
-
         </div>
+        
+        
            
         <div class="modal fade bs-example-modal-sm" id="skill-modal" tabindex="-1" role="dialog" aria-labelledby="skill-modal-label" aria-hidden="true" >
             <div class="modal-dialog">
@@ -89,6 +92,7 @@
         <script src="js/persona-q.json"></script>
         <script src="js/persona-q-skills.json"></script>
         <script src="js/jquery-1.11.2.min.js"></script>
+        <script src="js/typeahead.bundle.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script src="js/application.js"></script>
         <script src="js/handlebars-v2.0.0.js"></script>
@@ -99,7 +103,7 @@
                 compileTemplates();
                 registerHelpers();
                 registerPartials();
-
+                
                 $(document).on('click','.navbar-collapse.in',function(e) {
                     if( $(e.target).is('a') && $(e.target).attr('class') != 'dropdown-toggle' ) {
                         $(this).collapse('hide');
@@ -381,20 +385,35 @@
                 
             <div id="skill-modal-body" class="modal-body panel-body">
                 <div class="row">
-                    <div class="col-xs-1 text-info"><strong>Type</strong></div>
+                    <div class="col-xs-3 col-sm-2 text-info">
+                        <strong>
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Type
+                        </strong>
+                    </div>
+                    
                     <div class="col-xs-9">{{skill.type}}</div>
                 </div>
 
                 {{#if skill.range}}
                 <div class="row">
-                    <div class="col-xs-1 text-info"><strong>Range</strong></div>
+                    <div class="col-xs-3 col-sm-2 text-info">
+                        <strong>
+                            <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Range
+                        </strong>
+                    </div>
+                    
                     <div class="col-xs-9">{{skill.range}}</div>
                 </div>
                 {{/if}}
                 
                 {{#if skill.cost}}
                 <div class="row">
-                    <div class="col-xs-1 text-info"><strong>Cost</strong></div>
+                    <div class="col-xs-3 col-sm-2 text-info">
+                        <strong>
+                            <span class="glyphicon glyphicon-yen" aria-hidden="true"></span> Cost
+                        </strong>
+                    </div>
+                    
                     <div class="col-xs-9">{{skill.cost}}</div>
                 </div>
                 {{/if}}
@@ -407,6 +426,36 @@
             </div>
         </script>
         <!-- END Skill Details Template -->
+        
+        <!-- BEGIN Skill Controls Template -->
+        <script id="skill-controls" type="text/x-handlebars-template">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"/> Skill Search
+                </h3>
+            </div>
+            
+            <div class="panel-body">
+                <p class="exclaim bg-info text-info">
+                    <strong>
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"/> {{exclaim}}
+                    </strong>
+                </p>
+                
+                <div class="row">
+                    <div id="typeahead-container" class="form-group col-md-12">
+                        <label for="skill-search-text-field"><span class="glyphicon glyphicon-fire" aria-hidden="true"/> Skill</label>
+                        <input type="text" id="skill-search-text-field" name="skill-search-text-field" class="form-control typeahead">
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div id="autocomplete-container" class="col-md-12">
+                    </div>
+                </div>
+            </div>
+        </script>
+        <!-- END Skill Controls Template -->
         
     </body>
 </html>
