@@ -139,7 +139,7 @@ function fuse() {
     }
 
     if (personas.length > 0) {
-        console.log(" - Outputting personas");
+        console.log(" - Outputting personas (" + activePersona + ")");
             
         $("#fusion-result").html(Templates["persona-list"]({
             active: activePersona,
