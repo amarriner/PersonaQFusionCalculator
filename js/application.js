@@ -135,7 +135,7 @@ function activateSkills() {
     {
         name: 'skills',
         displayKey: 'value',
-        source: substringMatcher(personaQ["skills"])
+        source: substringMatcher(personaQ["skills"].sort())
     });
                 
     $("#skill-search-text-field").focus().bind('typeahead:selected', function() {
