@@ -65,21 +65,9 @@
         
             </div>
         </nav>
-        
-        <div id="credits" class="text-right">
-            <span>
-                <small>
-                    <a href="https://github.com/amarriner/PersonaQFusionCalculator">v0.4</a> | 
-                    by <a href="https://twitter.com/amarriner">@amarriner</a> | 
-                    Data based on 
-                    <a href="http://www.gamefaqs.com/3ds/739685-persona-q-shadow-of-the-labyrinth/faqs/70843">this FAQ</a> by
-                    <a href="http://www.gamefaqs.com/users/silentsword/contributions">Silentsword</a>
-                </small>
-            </span>
-        </div>
     
         <div class="container">
-          
+            
             <div id="personaQ">
                 <div id="select" class="panel panel-primary">
                     <div class="panel-body">Loading...</div>
@@ -90,36 +78,31 @@
             </div>
 
         </div>
-      
-      
-        <div class="modal fade" id="arcana-modal" tabindex="-1" role="dialog" aria-labelledby="arcana-modal-label" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content panel panel-info">
-                    <div class="modal-header panel-heading">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>    
-                        <h4 class="modal-title" id="arcana-modal-label">Arcana</h4>
-                    </div>
-                
-                    <div id="arcana-modal-body" class="modal-body panel-body">
-                    </div>
-                </div>
-            </div>
-        </div>
            
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script src="js/main.js"></script>
+        <script src="js/handlebars-v2.0.0.js"></script>
     
         <script type="text/javascript">
 
             $(document).ready(function() {
-                
+                $(document).on('click','.navbar-collapse.in',function(e) {
+                    if( $(e.target).is('a') && $(e.target).attr('class') != 'dropdown-toggle' ) {
+                        $(this).collapse('hide');
+                    }
+                });
+                                
                 $.getJSON("js/persona-q.json", function(json) {
+                    compileTemplates();
+                    registerHelpers();
+                    registerPartials();
+                    
                     activateSearch(json);
                     
                     $("#arcana-navbar").html("");
                     $.each(personaQ["arcana"].sort(), function(i) {
-                        $("#arcana-navbar").append($("<li/>").append($('<a href="#" onclick="buildArcanaModal(\'' + this + '\');"/>').text(this)));
+                        $("#arcana-navbar").append($("<li/>").append($('<a href="#" onclick="activateArcana(\'' + i + '\');"/>').text(this)));
                     });
                 });
             });
@@ -133,6 +116,247 @@
             ga('send', 'pageview');
 
         </script>
+        
+        <!-- BEGIN Persona list group Template -->
+        <script id="persona-list" type="text/x-handlebars-template">
+            <ul class="list-group">
+                <li class="row list-group-item active">
+                    <div class="row">
+                        <div class="col-xs-4 col-md-6">
+                            {{#if title}}
+                                <span class="hidden-xs">Arcana: </span>{{arcana}}
+                            {{/if}}
+                        </div>
+                        <div class="col-xs-1">Lvl</div>
+                        <div class="col-xs-1">HP</div>
+                        <div class="col-xs-1">SP</div>
+                    </div>
+                </li>
+                
+                {{#each personas}}
+                    {{> persona-list-item}}
+                {{/each}}
+            </ul>
+        </script>
+        <!-- END Persona list group Template -->
+        
+        <!-- BEGIN Persona list item partial Template -->
+        <script id="persona-list-item-partial" type="text/x-handlebars-template">
+             <li class="row list-group-item{{#ifEq ../active name}} list-group-item-info{{/ifEq}}">
+                <div class="col-xs-4 col-md-6">{{name}}</div>
+                <div class="col-xs-1">{{level}}</div>
+                <div class="col-xs-1">{{hp}}</div>
+                <div class="col-xs-1">{{sp}}</div>
+                        
+                <div class="col-xs-3 text-right">
+                    <div class="dropdown">
+                        <button class="btn btn-primary btn-xs" data-toggle="dropdown" aria-expanded="false">
+                            Skills <li class="caret"></li>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                            {{#eachSortedSkills skills}}
+                                {{#each this}}
+                                    <li><a href="#">{{this}}</a></li>
+                                {{/each}}
+                            {{/eachSortedSkills}}
+                        </ul>
+                    </div>
+                </div>
+            </li>
+        </script>
+        <!--
+        
+        <!-- BEGIN Search Controls Template -->
+        <script id="search-controls" type="text/x-handlebars-template">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"/> Search
+                </h3>
+            </div>
+            
+            <div class="panel-body">
+                <p class="exclaim bg-info text-info">
+                    <strong>
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"/> {{exclaim}}
+                    </strong>
+                </p>
+                
+                <div class="row">
+                    <div id="p1" class="form-group col-md-4">
+                        <label for="persona1">Persona 1</label>
+                        <select id="persona1" class="form-control">
+                            {{#eachSortedPersonas}}
+                                {{#each this}}
+                                    <option value="{{name}}">{{name}}</option>
+                                {{/each}}
+                            {{/eachSortedPersonas}}
+                        </select>
+                    </div>
+                    
+                    <div id="p1" class="form-group col-md-4">
+                        <label for="persona2">Persona 2</label>
+                        <select id="persona2" class="form-control">
+                            {{#eachSortedPersonas}}
+                                {{#each this}}
+                                    <option value="{{name}}">{{name}}</option>
+                                {{/each}}
+                            {{/eachSortedPersonas}}
+                        </select>
+                    </div>
+
+                    <div id="p1" class="form-group col-md-4">
+                        <label for="persona3">Persona 3</label>
+                        <select id="persona3" class="form-control">
+                            <option value="">NONE</option>
+                            {{#eachSortedPersonas}}
+                                {{#each this}}
+                                    <option value="{{name}}">{{name}}</option>
+                                {{/each}}
+                            {{/eachSortedPersonas}}
+                        </select>
+                    </div>
+
+                </div>    
+            </div>
+            
+            {{> credits}}
+            
+        </script>
+        <!-- END Search Controls Template -->
+        
+         <!-- BEGIN Accordion Persona List Template -->
+        <script id="accordion-persona-list" type="text/x-handlebars-template">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Persona List
+                </h3>
+            </div>
+            
+            <div class="panel-body">
+                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    {{#each letters}}
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="tab-{{@key}}">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{@key}}" aria-controls="collapse{{@key}}">
+                                        {{@key}}</a>
+                                </h4>
+                            </div>
+                            <div id="collapse{{@key}}" class="panel-collapse collapse" role="tabpanel" aria-labelleyby="tab-{{@key}}">
+                                <ul id="personas{{@key}}" class="panel-body list-group">
+                                    {{#each this}}
+                                        {{> persona-list-item }}    
+                                    {{/each}}
+                                </ul>
+                            </div>
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
+            
+            {{> credits}}
+
+        </script>
+        <!-- END Accordion Persona List Template -->
+
+        <!-- BEGIN Credits partial Template -->
+        <script id="credits-partial" type="text/x-handlebars-template">
+            <div class="credits panel-footer text-right">
+                <div id="" class="text-right">
+                    <span>
+                        <small>
+                            <a href="https://github.com/amarriner/PersonaQFusionCalculator">v0.5</a> | 
+                            by <a href="https://twitter.com/amarriner">@amarriner</a> | 
+                            Data based on 
+                            <a href="http://www.gamefaqs.com/3ds/739685-persona-q-shadow-of-the-labyrinth/faqs/70843">this FAQ</a> by
+                            <a href="http://www.gamefaqs.com/users/silentsword/contributions">Silentsword</a>
+                        </small>
+                    </span>
+                </div>
+            </div>
+        </script>
+        <!-- END Credits partial Template -->
+        
+        <!-- BEGIN Arcana list Template -->
+        <script id="arcana-list" type="text/x-handlebars-template">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <span class="glyphicon glyphicon-th-list" aria-hidden="true"/> {{arcana}}
+                </h3>
+            </div>
+            
+            <div id="arcana-list" class="panel-body">
+                <ul class="list-group">
+                    {{#each personas}}
+                        {{> persona-list-item}}
+                    {{/each}}
+                </ul>
+            </div>
+            
+            {{> credits}}
+        </script>
+        <!-- END Arcana list Template -->
+    
+        <!-- BEGIN Ingredients Controls Template -->
+        <script id="ingredients-controls" type="text/x-handlebars-template">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"/> Ingredients
+                </h3>
+            </div>
+            
+            <div class="panel-body">
+                <p class="exclaim bg-info text-info">
+                    <strong>
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"/> {{exclaim}}
+                    </strong>
+                </p>
+                
+                <div class="row">
+                    <div id="f-top" class="form-group col-md-12">
+                        <label for="fused">Persona</label>
+                        <select id="fused" class="form-control">
+                             {{#eachSortedPersonas}}
+                                {{#each this}}
+                                    <option value="{{name}}">{{name}}</option>
+                                {{/each}}
+                            {{/eachSortedPersonas}}
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="row text-center">
+                    <strong class="text-info">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> 
+                        This function is very much a work in progress!
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    </strong>
+                </div>
+            </div>
+        </script>
+        <!-- END Ingredients Template -->
+        
+        <!-- BEGIN Ingredients List Template -->
+        <script id="ingredients-list" type="text/x-handlebars-template">
+            <ul class="list-group">
+                <li class="row list-group-item active">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <span class="hidden-xs">Arcana: </span>
+                            {{arcana}}
+                        </div>
+                    </div>
+                </li>
+                {{#each results}}
+                    <li class="row list-group-item">
+                        <div class="col-md-6">{{getArcanaName this.arcana.[0]}}</div>
+                        <div class="col-md-6">{{getArcanaName this.arcana.[1]}}</div>
+                    </li>
+                {{/each}}
+            </ul>
+        </script>
+        <!-- END Ingredients List Template -->
+        
     </body>
 </html>
 
