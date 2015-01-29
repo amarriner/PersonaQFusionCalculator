@@ -1,5 +1,4 @@
 var activePersona;
-var personaQ;
 var Templates = {};
 
 /* ------------------------- Handlebars Functions ------------------------------------- */
@@ -16,7 +15,7 @@ function registerHelpers() {
         var s = new Array();
         
         $.each(skills.sort(skillSortNameAsc), function(i) {
-            s.push(personaQ["skills"][this]);
+            s.push(getSkillByName(personaQ["skills"][this]));
         });
             
         return options.fn(s);
@@ -48,7 +47,7 @@ function registerPartials() {
 /*
  * Build search controls after loading JSON
  */ 
-function activateSearch(json) {    
+function activateSearch() {    
     if (typeof json != "undefined") {
         personaQ = json;
     }
@@ -119,6 +118,15 @@ function activatePersonas() {
         $('#accordion div.panel div[aria-expanded="false"]').parent().removeClass("panel-info");
     });
 
+}
+
+function showSkillModal(skillName) {
+    $("#skill-modal-content").html(Templates["skill-details"]({
+        skill: getSkillByName(skillName)
+    }));
+    
+    $("#skill-modal").modal("show");
+    return false;
 }
 
 /* ------------------------ Fusion Calculation Functions ------------------------------- */
@@ -232,6 +240,30 @@ function getTripleFusion(a, b, c) {
 
 /* ----------------------------- Retrieval Functions ----------------------------- */
 
+function getIngredients() {
+    $("#fusion-result").empty();
+    
+    var persona = getPersonaByName($("#fused").val());
+    console.log("Finding ingredients for " + persona["name"]);
+    
+    var results = new Array();
+    $.each(personaQ["fusions"]["normal"], function(i, value) {
+        if (this["result"] == persona["arcana"]) {
+            console.log(this["arcana"]);
+            results.push(this);    
+        }
+    });
+    
+    if (results.length > 0) {
+        console.log("Found results");
+        
+        $("#fusion-result").html(Templates["ingredients-list"]({
+            arcana: personaQ["arcana"][persona["arcana"]],
+            results: results
+        }));
+    }
+}
+
 function getPersonasByArcana(arcana) {
     console.log("Getting personas by arcana (" + personaQ["arcana"][arcana] + ")");
     
@@ -259,28 +291,18 @@ function getPersonaByName(name) {
     return r;
 }
 
-function getIngredients() {
-    $("#fusion-result").empty();
+function getSkillByName(name) {
+    console.log("Getting skill by name (" + name + ")");
     
-    var persona = getPersonaByName($("#fused").val());
-    console.log("Finding ingredients for " + persona["name"]);
+    var r = false;
     
-    var results = new Array();
-    $.each(personaQ["fusions"]["normal"], function(i, value) {
-        if (this["result"] == persona["arcana"]) {
-            console.log(this["arcana"]);
-            results.push(this);    
+    $.each(personaQSkills, function(i) {
+        if (this["name"] == name) {
+            r = this;
         }
     });
     
-    if (results.length > 0) {
-        console.log("Found results");
-        
-        $("#fusion-result").html(Templates["ingredients-list"]({
-            arcana: personaQ["arcana"][persona["arcana"]],
-            results: results
-        }));
-    }
+    return r;
 }
 
 /* ----------------------- Sorting Functions ----------------------- */

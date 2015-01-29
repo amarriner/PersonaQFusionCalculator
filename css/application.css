@@ -158,6 +158,16 @@ body {
     width: 90%;
 }
 
+#skill-modal-footer {
+    padding-top: 15px;
+    padding-bottom: 10px;
+    text-align: left;
+}
+
+#skill-modal-label {
+    font-weight: bold;
+}
+
 .exclaim {
     border-radius: 4px;
     padding: 5px;

@@ -12,7 +12,7 @@
         <title>Persona Q Fusions</title>
 
         <link href="css/bootstrap.min.css" rel="stylesheet">
-        <link href="css/main.css" rel="stylesheet">
+        <link href="css/application.css" rel="stylesheet">
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
@@ -54,12 +54,12 @@
                         </li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Arcana <span class="caret"></span></a>
+                                <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Arcana <span class="caret"></span></a>
                             <ul id="arcana-navbar" class="dropdown-menu" role="menu">
                                 <li>loading...</li>
                             </ul>
                         </li>
-                        <li><a href="#" onclick="activatePersonas();"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Personas</a></li>
+                        <li><a href="#" onclick="activatePersonas();"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Personas</a></li>
                     </ul>
                 </div>
         
@@ -79,32 +79,39 @@
 
         </div>
            
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <div class="modal fade bs-example-modal-sm" id="skill-modal" tabindex="-1" role="dialog" aria-labelledby="skill-modal-label" aria-hidden="true" >
+            <div class="modal-dialog">
+                <div id="skill-modal-content" class="modal-content panel panel-info">
+                </div>
+            </div>
+        </div>
+        
+        <script src="js/persona-q.json"></script>
+        <script src="js/persona-q-skills.json"></script>
+        <script src="js/jquery-1.11.2.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
-        <script src="js/main.js"></script>
+        <script src="js/application.js"></script>
         <script src="js/handlebars-v2.0.0.js"></script>
     
         <script type="text/javascript">
 
             $(document).ready(function() {
+                compileTemplates();
+                registerHelpers();
+                registerPartials();
+
                 $(document).on('click','.navbar-collapse.in',function(e) {
                     if( $(e.target).is('a') && $(e.target).attr('class') != 'dropdown-toggle' ) {
                         $(this).collapse('hide');
                     }
                 });
-                                
-                $.getJSON("js/persona-q.json", function(json) {
-                    compileTemplates();
-                    registerHelpers();
-                    registerPartials();
-                    
-                    activateSearch(json);
-                    
-                    $("#arcana-navbar").html("");
-                    $.each(personaQ["arcana"].sort(), function(i) {
-                        $("#arcana-navbar").append($("<li/>").append($('<a href="#" onclick="activateArcana(\'' + i + '\');"/>').text(this)));
-                    });
+                                    
+                $("#arcana-navbar").empty();
+                $.each(personaQ["arcana"].sort(), function(i) {
+                    $("#arcana-navbar").append($("<li/>").append($('<a href="#" onclick="activateArcana(\'' + i + '\');"/>').text(this)));
                 });
+                    
+                activateSearch();
             });
 
             (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -124,7 +131,7 @@
                     <div class="row">
                         <div class="col-xs-4 col-md-6">
                             {{#if title}}
-                                <span class="hidden-xs">Arcana: </span>{{arcana}}
+                                <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> <span class="hidden-xs">Arcana: </span>{{arcana}}
                             {{/if}}
                         </div>
                         <div class="col-xs-1">Lvl</div>
@@ -151,12 +158,12 @@
                 <div class="col-xs-3 text-right">
                     <div class="dropdown">
                         <button class="btn btn-primary btn-xs" data-toggle="dropdown" aria-expanded="false">
-                            Skills <li class="caret"></li>
+                            <span class="glyphicon glyphicon-fire" aria-hidden="true"></span> Skills <li class="caret"></li>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-right" role="menu">
                             {{#eachSortedSkills skills}}
                                 {{#each this}}
-                                    <li><a href="#">{{this}}</a></li>
+                                    <li><a href="#" onclick="showSkillModal('{{this.name}}');"><abbr title="{{this.description}}">{{this.name}}</abbr></a></li>
                                 {{/each}}
                             {{/eachSortedSkills}}
                         </ul>
@@ -164,7 +171,7 @@
                 </div>
             </li>
         </script>
-        <!--
+        <!-- END Persona list item partial Template -->
         
         <!-- BEGIN Search Controls Template -->
         <script id="search-controls" type="text/x-handlebars-template">
@@ -183,7 +190,7 @@
                 
                 <div class="row">
                     <div id="p1" class="form-group col-md-4">
-                        <label for="persona1">Persona 1</label>
+                        <label for="persona1"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Persona 1</label>
                         <select id="persona1" class="form-control">
                             {{#eachSortedPersonas}}
                                 {{#each this}}
@@ -194,7 +201,7 @@
                     </div>
                     
                     <div id="p1" class="form-group col-md-4">
-                        <label for="persona2">Persona 2</label>
+                        <label for="persona2"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Persona 2</label>
                         <select id="persona2" class="form-control">
                             {{#eachSortedPersonas}}
                                 {{#each this}}
@@ -205,7 +212,7 @@
                     </div>
 
                     <div id="p1" class="form-group col-md-4">
-                        <label for="persona3">Persona 3</label>
+                        <label for="persona3"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Persona 3</label>
                         <select id="persona3" class="form-control">
                             <option value="">NONE</option>
                             {{#eachSortedPersonas}}
@@ -228,7 +235,7 @@
         <script id="accordion-persona-list" type="text/x-handlebars-template">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Persona List
+                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Persona List
                 </h3>
             </div>
             
@@ -284,7 +291,7 @@
         <script id="arcana-list" type="text/x-handlebars-template">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    <span class="glyphicon glyphicon-th-list" aria-hidden="true"/> {{arcana}}
+                    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"/> {{arcana}}
                 </h3>
             </div>
             
@@ -317,7 +324,7 @@
                 
                 <div class="row">
                     <div id="f-top" class="form-group col-md-12">
-                        <label for="fused">Persona</label>
+                        <label for="fused"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Persona</label>
                         <select id="fused" class="form-control">
                              {{#eachSortedPersonas}}
                                 {{#each this}}
@@ -347,6 +354,7 @@
                 <li class="row list-group-item active">
                     <div class="row">
                         <div class="col-xs-12">
+                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> 
                             <span class="hidden-xs">Arcana: </span>
                             {{arcana}}
                         </div>
@@ -361,6 +369,44 @@
             </ul>
         </script>
         <!-- END Ingredients List Template -->
+        
+        <!-- BEGIN Skill Details Template -->
+        <script id="skill-details" type="text/x-handlebars-template">
+            <div class="modal-header panel-heading">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>    
+                <h4 class="modal-title text-uppercase" id="skill-modal-label">
+                    <span class="glyphicon glyphicon-fire" aria-hidden="true"></span> {{skill.name}}
+                </h4>
+            </div>
+                
+            <div id="skill-modal-body" class="modal-body panel-body">
+                <div class="row">
+                    <div class="col-xs-1 text-info"><strong>Type</strong></div>
+                    <div class="col-xs-9">{{skill.type}}</div>
+                </div>
+
+                {{#if skill.range}}
+                <div class="row">
+                    <div class="col-xs-1 text-info"><strong>Range</strong></div>
+                    <div class="col-xs-9">{{skill.range}}</div>
+                </div>
+                {{/if}}
+                
+                {{#if skill.cost}}
+                <div class="row">
+                    <div class="col-xs-1 text-info"><strong>Cost</strong></div>
+                    <div class="col-xs-9">{{skill.cost}}</div>
+                </div>
+                {{/if}}
+            </div>
+            
+            <div id="skill-modal-footer" class="modal-footer panel-footer">
+                <p>
+                    <em>{{skill.description}}</em>
+                </p>
+            </div>
+        </script>
+        <!-- END Skill Details Template -->
         
     </body>
 </html>
