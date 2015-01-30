@@ -209,27 +209,42 @@ this["personaQTemplates"]["skill-controls"] = Handlebars.template({"compiler":[6
 
 
 this["personaQTemplates"]["skill-details"] = Handlebars.template({"1":function(depth0,helpers,partials,data) {
+  return "<div class=\"panel panel-info\">\r\n";
+  },"3":function(depth0,helpers,partials,data) {
+  return "    <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>    \r\n";
+  },"5":function(depth0,helpers,partials,data) {
   var stack1, lambda=this.lambda, escapeExpression=this.escapeExpression;
   return "    <div class=\"row\">\r\n        <div class=\"col-xs-3 col-sm-2 text-info\">\r\n            <strong>\r\n                <span class=\"glyphicon glyphicon-share-alt\" aria-hidden=\"true\"></span> Range\r\n            </strong>\r\n        </div>\r\n        \r\n        <div class=\"col-xs-9\">"
     + escapeExpression(lambda(((stack1 = (depth0 != null ? depth0.skill : depth0)) != null ? stack1.range : stack1), depth0))
     + "</div>\r\n    </div>\r\n";
-},"3":function(depth0,helpers,partials,data) {
+},"7":function(depth0,helpers,partials,data) {
   var stack1, lambda=this.lambda, escapeExpression=this.escapeExpression;
   return "    <div class=\"row\">\r\n        <div class=\"col-xs-3 col-sm-2 text-info\">\r\n            <strong>\r\n                <span class=\"glyphicon glyphicon-yen\" aria-hidden=\"true\"></span> Cost\r\n            </strong>\r\n        </div>\r\n                    \r\n        <div class=\"col-xs-9\">"
     + escapeExpression(lambda(((stack1 = (depth0 != null ? depth0.skill : depth0)) != null ? stack1.cost : stack1), depth0))
     + "</div>\r\n    </div>\r\n";
-},"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-  var stack1, lambda=this.lambda, escapeExpression=this.escapeExpression, buffer = "<div class=\"modal-header panel-heading\">\r\n    <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>    \r\n    <h4 class=\"modal-title text-uppercase\" id=\"skill-modal-label\">\r\n        <span class=\"glyphicon glyphicon-fire\" aria-hidden=\"true\"></span> "
+},"9":function(depth0,helpers,partials,data) {
+  return "</div>\r\n";
+  },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+  var stack1, lambda=this.lambda, escapeExpression=this.escapeExpression, buffer = "";
+  stack1 = helpers['if'].call(depth0, (depth0 != null ? depth0.wrapper : depth0), {"name":"if","hash":{},"fn":this.program(1, data),"inverse":this.noop,"data":data});
+  if (stack1 != null) { buffer += stack1; }
+  buffer += "\r\n<div class=\"modal-header panel-heading\">\r\n";
+  stack1 = helpers.unless.call(depth0, (depth0 != null ? depth0.wrapper : depth0), {"name":"unless","hash":{},"fn":this.program(3, data),"inverse":this.noop,"data":data});
+  if (stack1 != null) { buffer += stack1; }
+  buffer += "    <h4 class=\"modal-title text-uppercase\" id=\"skill-modal-label\">\r\n        <span class=\"glyphicon glyphicon-fire\" aria-hidden=\"true\"></span> "
     + escapeExpression(lambda(((stack1 = (depth0 != null ? depth0.skill : depth0)) != null ? stack1.name : stack1), depth0))
     + "\r\n    </h4>\r\n</div>\r\n                \r\n<div id=\"skill-modal-body\" class=\"modal-body panel-body\">\r\n    <div class=\"row\">\r\n        <div class=\"col-xs-3 col-sm-2 text-info\">\r\n            <strong>\r\n                <span class=\"glyphicon glyphicon-cog\" aria-hidden=\"true\"></span> Type\r\n            </strong>\r\n        </div>\r\n                    \r\n        <div class=\"col-xs-9\">"
     + escapeExpression(lambda(((stack1 = (depth0 != null ? depth0.skill : depth0)) != null ? stack1.type : stack1), depth0))
     + "</div>\r\n    </div>\r\n\r\n";
-  stack1 = helpers['if'].call(depth0, ((stack1 = (depth0 != null ? depth0.skill : depth0)) != null ? stack1.range : stack1), {"name":"if","hash":{},"fn":this.program(1, data),"inverse":this.noop,"data":data});
+  stack1 = helpers['if'].call(depth0, ((stack1 = (depth0 != null ? depth0.skill : depth0)) != null ? stack1.range : stack1), {"name":"if","hash":{},"fn":this.program(5, data),"inverse":this.noop,"data":data});
   if (stack1 != null) { buffer += stack1; }
   buffer += "                \r\n";
-  stack1 = helpers['if'].call(depth0, ((stack1 = (depth0 != null ? depth0.skill : depth0)) != null ? stack1.cost : stack1), {"name":"if","hash":{},"fn":this.program(3, data),"inverse":this.noop,"data":data});
+  stack1 = helpers['if'].call(depth0, ((stack1 = (depth0 != null ? depth0.skill : depth0)) != null ? stack1.cost : stack1), {"name":"if","hash":{},"fn":this.program(7, data),"inverse":this.noop,"data":data});
   if (stack1 != null) { buffer += stack1; }
-  return buffer + "</div>\r\n            \r\n<div id=\"skill-modal-footer\" class=\"modal-footer panel-footer\">\r\n    <p>\r\n        <em>"
+  buffer += "</div>\r\n            \r\n<div id=\"skill-modal-footer\" class=\"modal-footer panel-footer\">\r\n    <p>\r\n        <em>"
     + escapeExpression(lambda(((stack1 = (depth0 != null ? depth0.skill : depth0)) != null ? stack1.description : stack1), depth0))
-    + "</em>\r\n    </p>\r\n</div>";
+    + "</em>\r\n    </p>\r\n</div>\r\n\r\n";
+  stack1 = helpers['if'].call(depth0, (depth0 != null ? depth0.wrapper : depth0), {"name":"if","hash":{},"fn":this.program(9, data),"inverse":this.noop,"data":data});
+  if (stack1 != null) { buffer += stack1; }
+  return buffer;
 },"useData":true});

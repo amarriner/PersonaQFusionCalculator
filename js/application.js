@@ -3,12 +3,6 @@ var Templates = {};
 
 /* ------------------------- Handlebars Functions ------------------------------------- */
 
-function compileTemplates() {
-    $.each($("[type='text/x-handlebars-template']"), function(i) {
-        Templates[$(this).attr("id")] = Handlebars.compile($(this).html());
-    });
-}
-
 function registerHelpers() {
     // eachSortedSkills
     Handlebars.registerHelper('eachSortedSkills', function(skills, options) {
@@ -139,7 +133,10 @@ function activateSkills() {
     });
                 
     $("#skill-search-text-field").focus().bind('typeahead:selected', function() {
-        showSkillModal($(this).val());
+        $("#fusion-result").html(personaQTemplates["skill-details"]({
+            skill: getSkillByName($(this).val()),
+            wrapper: true
+        }));
     });
 }
 
