@@ -56,7 +56,7 @@ this["personaQTemplates"]["arcana-list"] = Handlebars.template({"1":function(dep
 
 
 this["personaQTemplates"]["credits-partial"] = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-  return "<div class=\"credits panel-footer text-right\">\r\n    <div id=\"\" class=\"text-right\">\r\n        <span>\r\n            <small>\r\n                <ol class=\"breadcrumb\">\r\n                    <li><a href=\"https://github.com/amarriner/PersonaQFusionCalculator\">v0.6</a></li>\r\n                    <li>by <a href=\"https://twitter.com/amarriner\">@amarriner</a></li>\r\n                    <li>Data based on \r\n                        <a href=\"http://www.gamefaqs.com/3ds/739685-persona-q-shadow-of-the-labyrinth/faqs/70843\">this FAQ</a> by\r\n                        <a href=\"http://www.gamefaqs.com/users/silentsword/contributions\">Silentsword</a>\r\n                    </li>\r\n                </ol>\r\n            </small>\r\n        </span>\r\n    </div>\r\n</div>";
+  return "<div class=\"credits panel-footer text-right\">\r\n    <div id=\"\" class=\"text-right\">\r\n        <span>\r\n            <small>\r\n                <ol class=\"breadcrumb\">\r\n                    <li><a href=\"https://github.com/amarriner/PersonaQFusionCalculator\">v0.7</a></li>\r\n                    <li>by <a href=\"https://twitter.com/amarriner\">@amarriner</a></li>\r\n                    <li>Data based on \r\n                        <a href=\"http://www.gamefaqs.com/3ds/739685-persona-q-shadow-of-the-labyrinth/faqs/70843\">this FAQ</a>\r\n                    </li>\r\n                </ol>\r\n            </small>\r\n        </span>\r\n    </div>\r\n</div>";
   },"useData":true});
 
 
@@ -115,7 +115,7 @@ this["personaQTemplates"]["persona-list-item-partial"] = Handlebars.template({"1
   return buffer;
 },"4":function(depth0,helpers,partials,data) {
   var lambda=this.lambda, escapeExpression=this.escapeExpression;
-  return "                        <li><a href=\"#\" onclick=\"showSkillModal('"
+  return "                        <li><a onclick=\"showSkillModal('"
     + escapeExpression(lambda((depth0 != null ? depth0.name : depth0), depth0))
     + "');\"><abbr title=\""
     + escapeExpression(lambda((depth0 != null ? depth0.description : depth0), depth0))
@@ -144,7 +144,7 @@ this["personaQTemplates"]["persona-list-item-partial"] = Handlebars.template({"1
 
 this["personaQTemplates"]["persona-list"] = Handlebars.template({"1":function(depth0,helpers,partials,data) {
   var helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
-  return "                    <span class=\"glyphicon glyphicon-eye-open\" aria-hidden=\"true\"></span> <span class=\"hidden-xs\">Arcana: </span>"
+  return "                    <span class=\"glyphicon glyphicon-eye-open\" aria-hidden=\"true\"></span> <span class=\"hidden-xs\">Arcana: </span> "
     + escapeExpression(((helper = (helper = helpers.arcana || (depth0 != null ? depth0.arcana : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"arcana","hash":{},"data":data}) : helper)))
     + "\r\n";
 },"3":function(depth0,helpers,partials,data) {

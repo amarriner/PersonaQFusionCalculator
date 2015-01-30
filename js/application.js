@@ -1,5 +1,104 @@
 var activePersona;
-var Templates = {};
+
+var deepLinks = {}
+deepLinks["index"] = function() { activateSearch(); };
+deepLinks["search"] = function() { activateSearch(); };
+deepLinks["ingredients"] = function() { activateIngredients(); };
+deepLinks["skills"] = function(name) { activateSkills(unslugify(name)); };
+deepLinks["personas"] = function() { activatePersonas(); };
+deepLinks["arcana"] = function(name) { activateArcana(personaQ["arcana"].indexOf(unslugify(name))); };
+                    
+/*
+ * Initial pageload stuff
+ */
+$(document).ready(function() {
+    // Register Handlebars stuff
+    registerHelpers();
+    registerPartials();
+                
+    // Fix issue where bootstrap menu doesn't close on mobile when a link is clicked
+    $(document).on('click','.navbar-collapse.in',function(e) {
+        if( $(e.target).is('a') && $(e.target).attr('class') != 'dropdown-toggle' ) {
+            $(this).collapse('hide');
+        }
+    });
+                        
+    // Filling out arcana dropdown
+    $("#arcana-navbar").empty();
+    $.each(personaQ["arcana"].sort(), function(i) {
+        $("#arcana-navbar").append($("<li/>").append($('<a class="deep-link" href="#/arcana/' + slugify(this) + '"/>').text(this)));
+    });
+                
+    // Setting up deep linking
+    $("a.deep-link").address(function() {
+        
+        return goDeepLink($(this).attr('href').replace(/^#/, ''));
+        
+    }).init(function() {
+        
+        return goDeepLink($.address.path());
+        
+    });
+});
+
+/*
+ * Process deep link value 
+ */
+function goDeepLink(link) {
+    var key = link.replace(/^\//, "");
+    console.log(key + " " + link);
+    
+    if (typeof key == "undefined" || key == "") {
+        key = "index";
+    }
+    console.log(key + " " + link);
+    
+    var param = undefined;
+    key = key.split("/")[0];
+    
+    console.log(key + " " + link);
+    
+    if (link.split("/").length > 1) {
+        param = link.split("/")[link.split("/").length - 1];
+    }
+    
+    console.log(key + " " + link);
+    
+    deepLinks[key](param);
+    
+    console.log(key + " " + link);
+    return link;
+}
+
+/*
+ * Return slug version of string 
+ */
+function slugify(name) {
+    var r;
+    if (name) {
+        r = name.toLowerCase().replace(" ", "-");
+    }
+    
+    return r;
+}
+
+/*
+ * Return unslug version of string
+ */
+function unslugify(name) {
+    var r = "";
+    $.each(name.split("-"), function() {
+        if (typeof this != "undefined") {
+            if (r != "") {
+                r += " ";
+            }
+        
+            r += this[0].toUpperCase() + this.substring(1, this.length);
+        }
+    });
+    
+    return r;
+}
 
 /* ------------------------- Handlebars Functions ------------------------------------- */
 
@@ -78,8 +177,6 @@ function activateArcana(arcana) {
         personas: getPersonasByArcana(arcana),
         title: true
     }));
-    
-    $("#fusion-result div.panel").append(Templates["credits-partial"]());
 }
 
 /*
@@ -114,7 +211,8 @@ function activatePersonas() {
 /*
  * Build skill search controls
  */ 
-function activateSkills() {    
+function activateSkills(name) {    
+    console.log(name);
     $("#fusion-result").empty();
     
     $("#select").html(personaQTemplates["skill-controls"]({
@@ -133,13 +231,28 @@ function activateSkills() {
     });
                 
     $("#skill-search-text-field").focus().bind('typeahead:selected', function() {
-        $("#fusion-result").html(personaQTemplates["skill-details"]({
-            skill: getSkillByName($(this).val()),
-            wrapper: true
-        }));
+        var a = "/skills/" + slugify($(this).val())
+        $.address.path(a);
+        goDeepLink(a);
     });
+    
+    if (typeof name != "undefined" && name != "") {
+        
+        skill = getSkillByName(name);
+        
+        if (skill) {
+            $("#fusion-result").html(personaQTemplates["skill-details"]({
+                skill: skill,
+                slug: slugify(name),
+                wrapper: true
+            }));  
+        }
+    }
 }
 
+/* 
+ * Lifted from typehead.js docs to build suggestion list
+ */
 var substringMatcher = function(strs) {
   return function findMatches(q, cb) {
     var matches, substrRegex;
@@ -200,6 +313,7 @@ function fuse() {
             active: activePersona,
             arcana: personaQ["arcana"][personas[0]["arcana"]],
             personas: personas,
+            slug: slugify(personaQ["arcana"][personas[0]["arcana"]]),
             title: true
         }));
     }
@@ -339,8 +453,6 @@ function getPersonaByName(name) {
 }
 
 function getSkillByName(name) {
-    console.log("Getting skill by name (" + name + ")");
-    
     var r = false;
     
     $.each(personaQSkills, function(i) {

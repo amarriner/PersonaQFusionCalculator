@@ -210,3 +210,11 @@ body {
 .ui-helper-hidden-accessible {
     display: none;
 }
+
+.slug, .slug:active, .slug:visited {
+    color: #fff;
+}
+
+.slug:hover {
+    color: #a05b9f;
+}

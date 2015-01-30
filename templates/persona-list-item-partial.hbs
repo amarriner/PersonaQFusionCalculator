@@ -12,7 +12,7 @@
             <ul class="dropdown-menu dropdown-menu-right" role="menu">
                 {{#eachSortedSkills skills}}
                     {{#each this}}
-                        <li><a href="#" onclick="showSkillModal('{{this.name}}');"><abbr title="{{this.description}}">{{this.name}}</abbr></a></li>
+                        <li><a onclick="showSkillModal('{{this.name}}');"><abbr title="{{this.description}}">{{this.name}}</abbr></a></li>
                     {{/each}}
                 {{/eachSortedSkills}}
             </ul>

@@ -39,17 +39,17 @@
                         <span class="icon-bar"></span>
                     </button>
                     
-                    <a class="navbar-brand" href="#">Persona Q Fusion Calculator</a>
+                    <a class="navbar-brand deep-link" href="#index">Persona Q Fusion Calculator</a>
                 </div>
                 
                 <div id="navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
                         <li>
-                            <a href="#" onclick="activateSearch();">
+                            <a class="deep-link" href="#/search">
                             <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search</a>
                         </li>
                         <li>
-                            <a href="#" onclick="activateIngredients();">
+                            <a class="deep-link" href="#/ingredients">
                             <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Ingredients</a>
                         </li>
                         <li class="dropdown">
@@ -59,8 +59,8 @@
                                 <li>loading...</li>
                             </ul>
                         </li>
-                        <li><a href="#" onclick="activatePersonas();"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Personas</a></li>
-                        <li><a href="#" onclick="activateSkills();"><span class="glyphicon glyphicon-fire" aria-hidden="true"></span> Skills</a></li>
+                        <li><a class="deep-link" href="#/personas"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Personas</a></li>
+                        <li><a class="deep-link" href="#/skills"><span class="glyphicon glyphicon-fire" aria-hidden="true"></span> Skills</a></li>
 
                     </ul>
                 </div>
@@ -97,26 +97,9 @@
         <script src="js/application.js"></script>
         <script src="js/handlebars-v2.0.0.js"></script>
         <script src="js/handlebars-templates.js"></script>
+        <script src="js/jquery-address-1.6.js"></script>
     
         <script type="text/javascript">
-
-            $(document).ready(function() {
-                registerHelpers();
-                registerPartials();
-                
-                $(document).on('click','.navbar-collapse.in',function(e) {
-                    if( $(e.target).is('a') && $(e.target).attr('class') != 'dropdown-toggle' ) {
-                        $(this).collapse('hide');
-                    }
-                });
-                                    
-                $("#arcana-navbar").empty();
-                $.each(personaQ["arcana"].sort(), function(i) {
-                    $("#arcana-navbar").append($("<li/>").append($('<a href="#" onclick="activateArcana(\'' + i + '\');"/>').text(this)));
-                });
-                    
-                activateSearch();
-            });
 
             (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
                 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
