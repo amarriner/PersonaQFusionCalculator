@@ -21,7 +21,7 @@ this["personaQTemplates"]["accordionPersonaList"] = Handlebars.template({"1":fun
   return buffer + "                    </ul>\r\n                </div>\r\n            </div>\r\n";
 },"2":function(depth0,helpers,partials,data) {
   var stack1, buffer = "";
-  stack1 = this.invokePartial(partials['persona-list-item'], '                            ', 'persona-list-item', depth0, undefined, helpers, partials, data);
+  stack1 = this.invokePartial(partials.personaListItem, '                            ', 'personaListItem', depth0, undefined, helpers, partials, data);
   if (stack1 != null) { buffer += stack1; }
   return buffer;
 },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
@@ -38,7 +38,7 @@ this["personaQTemplates"]["accordionPersonaList"] = Handlebars.template({"1":fun
 
 this["personaQTemplates"]["arcanaList"] = Handlebars.template({"1":function(depth0,helpers,partials,data) {
   var stack1, buffer = "";
-  stack1 = this.invokePartial(partials['persona-list-item'], '            ', 'persona-list-item', depth0, undefined, helpers, partials, data);
+  stack1 = this.invokePartial(partials.personaListItem, '            ', 'personaListItem', depth0, undefined, helpers, partials, data);
   if (stack1 != null) { buffer += stack1; }
   return buffer;
 },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
@@ -56,7 +56,7 @@ this["personaQTemplates"]["arcanaList"] = Handlebars.template({"1":function(dept
 
 
 this["personaQTemplates"]["creditsPartial"] = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-  return "<div class=\"credits panel-footer text-right\">\r\n    <div id=\"\" class=\"text-right\">\r\n        <span>\r\n            <small>\r\n                <ol class=\"breadcrumb\">\r\n                    <li><a href=\"https://github.com/amarriner/PersonaQFusionCalculator\">v0.7</a></li>\r\n                    <li>by <a href=\"https://twitter.com/amarriner\">@amarriner</a></li>\r\n                    <li>Based on \r\n                        <a href=\"http://www.gamefaqs.com/3ds/739685-persona-q-shadow-of-the-labyrinth/faqs/70843\">this FAQ</a>\r\n                    </li>\r\n                </ol>\r\n            </small>\r\n        </span>\r\n    </div>\r\n</div>";
+  return "<div class=\"credits panel-footer text-right\">\r\n    <div id=\"\" class=\"text-right\">\r\n        <span>\r\n            <small>\r\n                <ol class=\"breadcrumb\">\r\n                    <li><a href=\"https://github.com/amarriner/PersonaQFusionCalculator\">v0.7.0</a></li>\r\n                    <li>by <a href=\"https://twitter.com/amarriner\">@amarriner</a></li>\r\n                    <li>Based on \r\n                        <a href=\"http://www.gamefaqs.com/3ds/739685-persona-q-shadow-of-the-labyrinth/faqs/70843\">this FAQ</a>\r\n                    </li>\r\n                </ol>\r\n            </small>\r\n        </span>\r\n    </div>\r\n</div>";
   },"useData":true});
 
 
@@ -149,7 +149,7 @@ this["personaQTemplates"]["personaList"] = Handlebars.template({"1":function(dep
     + "\r\n";
 },"3":function(depth0,helpers,partials,data) {
   var stack1, buffer = "";
-  stack1 = this.invokePartial(partials['persona-list-item'], '        ', 'persona-list-item', depth0, undefined, helpers, partials, data);
+  stack1 = this.invokePartial(partials.personaListItem, '        ', 'personaListItem', depth0, undefined, helpers, partials, data);
   if (stack1 != null) { buffer += stack1; }
   return buffer;
 },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {

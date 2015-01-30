@@ -25,7 +25,7 @@ module.exports = function(grunt) {
                     }
                 },
                 files: {
-                    "js/handlebars-templates.js": "templates/*.hbs"
+                    "src/js/handlebars-templates.js": "src/templates/*.hbs"
                 }
             }
         },
@@ -35,12 +35,12 @@ module.exports = function(grunt) {
                 eqeqeq: true,
                 eqnull: true,
                 browser: true,
-                reporterOutput: 'jshint.log',
+                reporterOutput: 'logs/jshint.log',
                 globals: {
                     jQuery: true
                 }
             },
-            uses_defaults: ['js/application.js']
+            uses_defaults: ['/src/js/application.js']
         },
         less: {
             development: {
@@ -49,7 +49,7 @@ module.exports = function(grunt) {
                     paths: ["less/**/*"]
                 },
                 files: {
-                    "css/application.css": "less/application.less"
+                    "src/css/application.css": "src/less/application.less"
                 }
             },
             production: {
@@ -58,7 +58,19 @@ module.exports = function(grunt) {
                     paths: ["less/**/*"]
                 },
                 files: {
-                    "css/application.css": "less/application.less"
+                    "css/application.min.css": "src/less/application.less"
+                }
+            }
+        },
+        uglify: {
+            default: {
+                files: {
+                    'js/application.min.js': [
+                        'src/js/persona-q.json', 
+                        'src/js/persona-q-skills.json',
+                        'src/js/application.js',
+                        'src/js/handlebars-templates.js'
+                    ]
                 }
             }
         }
@@ -67,4 +79,17 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-handlebars');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    
+    grunt.registerTask('build', 'Run all other Grunt targets to build', function() {
+        grunt.log.writeln('Building...');
+        
+        grunt.task.run('jshint');
+        
+        grunt.task.run('less');
+        
+        grunt.task.run('handlebars');
+        
+        grunt.task.run('uglify');
+    });
 }

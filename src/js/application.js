@@ -46,27 +46,27 @@ $(document).ready(function() {
  */
 function goDeepLink(link) {
     var key = link.replace(/^\//, "");
-    console.log(key + " " + link);
+    // console.log(key + " " + link);
     
     if (typeof key === "undefined" || key === "") {
         key = "index";
     }
-    console.log(key + " " + link);
+    // console.log(key + " " + link);
     
     var param;
     key = key.split("/")[0];
     
-    console.log(key + " " + link);
+    // console.log(key + " " + link);
     
     if (link.split("/").length > 1) {
         param = link.split("/")[link.split("/").length - 1];
     }
     
-    console.log(key + " " + link);
+    // console.log(key + " " + link);
     
     deepLinks[key](param);
     
-    console.log(key + " " + link);
+    // console.log(key + " " + link);
     return link;
 }
 
@@ -131,7 +131,7 @@ function registerHelpers() {
 }
 
 function registerPartials() {
-    Handlebars.registerPartial("persona-list-item", personaQTemplates.personaListItemPartial);
+    Handlebars.registerPartial("personaListItem", personaQTemplates.personaListItemPartial);
     Handlebars.registerPartial("credits", personaQTemplates.creditsPartial);
 }
 
@@ -212,7 +212,7 @@ function activatePersonas() {
  * Build skill search controls
  */ 
 function activateSkills(name) {    
-    console.log(name);
+    // console.log(name);
     $("#fusion-result").empty();
     
     $("#select").html(personaQTemplates.skillControls({
@@ -307,7 +307,7 @@ function fuse() {
     }
 
     if (personas.length > 0) {
-        console.log(" - Outputting personas (" + activePersona + ")");
+        // console.log(" - Outputting personas (" + activePersona + ")");
             
         $("#fusion-result").html(personaQTemplates.personaList({
             active: activePersona,
@@ -322,7 +322,7 @@ function fuse() {
 function getFusion(a, b, type) {
     type = (typeof type === "undefined" || $.inArray(type, ["normal", "triple"]) < 0) ? "normal" : type;
 
-    console.log("Getting [" + type + "] fusion for arcana: " + personaQ.arcana[a] + ", " + personaQ.arcana[b]);
+    // console.log("Getting [" + type + "] fusion for arcana: " + personaQ.arcana[a] + ", " + personaQ.arcana[b]);
     var r = false;
 
     if (a !== b || a === b) {
@@ -330,7 +330,7 @@ function getFusion(a, b, type) {
             
             if ($.inArray(a, this.arcana) >= "0" && $.inArray(b, this.arcana) >= "0") {
                 r = this.result;
-                console.log(" - [" + type + "] " + personaQ.arcana[a] + " fused with " + personaQ.arcana[b] + " results in " + personaQ.arcana[r]);
+                // console.log(" - [" + type + "] " + personaQ.arcana[a] + " fused with " + personaQ.arcana[b] + " results in " + personaQ.arcana[r]);
             
             }
         });
@@ -340,7 +340,7 @@ function getFusion(a, b, type) {
 }
     
 function getNormalFusion(a, b) {
-    console.log("Getting normal fusion for: " + a.name + ", " + b.name);
+    // console.log("Getting normal fusion for: " + a.name + ", " + b.name);
     
     var arcana = getFusion(a.arcana, b.arcana);
     var persona;
@@ -352,13 +352,13 @@ function getNormalFusion(a, b) {
         var avg = (a.level + b.level) / 2;
         $.each(personaQ.personas.sort(personaSortLevelAsc), function(i) {
             if (this.arcana === arcana) {
-                console.log(" - Found: " + this.name);
+                // console.log(" - Found: " + this.name);
                 personas.push(this);
                 
                 if (this.level > avg && (typeof activePersona === "undefined")) {
                     activePersona = this.name;
                     personas[personas.length - 1].active = true;
-                    console.log(' - Active persona: ' + activePersona);
+                    // console.log(' - Active persona: ' + activePersona);
                 }
             }
         });
@@ -368,7 +368,7 @@ function getNormalFusion(a, b) {
 }
 
 function getTripleFusion(a, b, c) {
-    console.log("Getting triple fusion for: " + a.name + ", " + b.name + ", " + c.name);
+    // console.log("Getting triple fusion for: " + a.name + ", " + b.name + ", " + c.name);
     var r = false;
     
     activePersona = undefined;
@@ -379,18 +379,18 @@ function getTripleFusion(a, b, c) {
     
     personas = [];
     if (r) {
-        console.log(" - Result: " + personaQ.arcana[r]);
+        // console.log(" - Result: " + personaQ.arcana[r]);
         
         var avg = (a.level, b.level, c.level) / 3;
         $.each(personaQ.personas.sort(personaSortLevelAsc), function(i) {
             if (this.arcana === arcana && [a, b, c].indexOf(this) < 0) {
-                console.log(" - Found: " + this.name);
+                // console.log(" - Found: " + this.name);
                 personas.push(this);
                 
                 if (this.level > avg && (typeof activePersona === "undefined")) {
                     activePersona = this.name;
                     personas[personas.length - 1].active = true;
-                    console.log(" - Active persona: " + this.name);
+                    // console.log(" - Active persona: " + this.name);
                 }
             }
         });
@@ -405,18 +405,18 @@ function getIngredients() {
     $("#fusion-result").empty();
     
     var persona = getPersonaByName($("#fused").val());
-    console.log("Finding ingredients for " + persona.name);
+    // console.log("Finding ingredients for " + persona.name);
     
     var results = [];
     $.each(personaQ.fusions.normal, function(i, value) {
         if (this.result === persona.arcana) {
-            console.log(this.arcana);
+            // console.log(this.arcana);
             results.push(this);    
         }
     });
     
     if (results.length > 0) {
-        console.log("Found results");
+        // console.log("Found results");
         
         $("#fusion-result").html(personaQTemplates.ingredientsList({
             arcana: personaQ.arcana[persona.arcana],
@@ -426,7 +426,7 @@ function getIngredients() {
 }
 
 function getPersonasByArcana(arcana) {
-    console.log("Getting personas by arcana (" + personaQ.arcana[arcana] + ")");
+    // console.log("Getting personas by arcana (" + personaQ.arcana[arcana] + ")");
     
     var personas = [];
     $.each(personaQ.personas, function(i, value) {
@@ -439,13 +439,13 @@ function getPersonasByArcana(arcana) {
 }
 
 function getPersonaByName(name) {
-    console.log("Getting persona by name (" + name + ")");
+    // console.log("Getting persona by name (" + name + ")");
     var r = false;
     
     $.each(personaQ.personas, function() {
         if (this.name === name) {
             r = this;
-            console.log(" - Found " + this.name);
+            // console.log(" - Found " + this.name);
         }
     });
     
@@ -558,15 +558,15 @@ function skillSortNameAsc(a, b) {
 }
 
 function sortPersonas(a, b, c) {
-    console.log("Sorting " + a.name + ", " + b.name + ", " + c.name);
+    // console.log("Sorting " + a.name + ", " + b.name + ", " + c.name);
     
     var p = [a, b, c].sort(personaSortLevelAsc);
     
-    console.log(" - Level Sort: " + p[0].name + ", " + p[1].name + ", " + p[2].name);
+    // console.log(" - Level Sort: " + p[0].name + ", " + p[1].name + ", " + p[2].name);
 
     if (p[1].level === p[2].level) {
         p = new Array(a) + new Array(b, c).sort(personaSortArcanaDesc);
-        console.log(" - Arcana Sort: " + p[0].name + ", " + p[1].name + ", " + p[2].name);
+        // console.log(" - Arcana Sort: " + p[0].name + ", " + p[1].name + ", " + p[2].name);
     }
     
     return p;
