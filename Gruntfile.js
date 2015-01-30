@@ -14,8 +14,29 @@ module.exports = function(grunt) {
                     "js/handlebars-templates.js": "templates/*.hbs"
                 }
             }
+        },
+        less: {
+            development: {
+                options: {
+                    compress: false,
+                    paths: ["less/**/*"]
+                },
+                files: {
+                    "css/application.css": "less/application.less"
+                }
+            },
+            production: {
+                options: {
+                    compress: true,
+                    paths: ["less/**/*"]
+                },
+                files: {
+                    "css/application.css": "less/application.less"
+                }
+            }
         }
     });
     
     grunt.loadNpmTasks('grunt-contrib-handlebars');
+    grunt.loadNpmTasks('grunt-contrib-less');
 }
