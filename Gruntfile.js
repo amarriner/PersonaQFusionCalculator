@@ -29,6 +29,16 @@ module.exports = function(grunt) {
                 }
             }
         },
+        imagemin: {
+            dynamic: {
+                files: [{
+                    expand: true,
+                    cwd: 'src/images/',
+                    src: ['**/*.{png,jpg,gif}'],
+                    dest: 'images/'
+                }]
+            }
+        },
         jshint: {
             options: {
                 curly: true,
@@ -77,6 +87,7 @@ module.exports = function(grunt) {
     });
     
     grunt.loadNpmTasks('grunt-contrib-handlebars');
+    grunt.loadNpmTasks('grunt-contrib-imagemin');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -85,6 +96,8 @@ module.exports = function(grunt) {
         grunt.log.writeln('Building...');
         
         grunt.task.run('jshint');
+        
+        grunt.task.run('imagemin');
         
         grunt.task.run('less');
         
