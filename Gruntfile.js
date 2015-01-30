@@ -1,6 +1,14 @@
 module.exports = function(grunt) {
     
     grunt.initConfig({
+        connect: {
+            server: {
+                options: {
+                    base: '.',
+                    port: 8000.
+                }
+            }
+        },
         handlebars: {
             compile: {
                 options: {
@@ -72,6 +80,15 @@ module.exports = function(grunt) {
                 }
             }
         },
+        qunit: {
+            all: {
+                options: {
+                    urls: [
+                        'http://localhost:8000/test/index.html',
+                    ]
+                }
+            }
+        },
         uglify: {
             default: {
                 files: {
@@ -86,21 +103,14 @@ module.exports = function(grunt) {
         }
     });
     
+    grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-handlebars');
     grunt.loadNpmTasks('grunt-contrib-imagemin');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-contrib-qunit');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     
-    grunt.registerTask('build', 'Run all other Grunt targets to build', function() {
-        grunt.log.writeln('Building...');
-        
-        grunt.task.run('jshint');
-        
-        grunt.task.run('less');
-        
-        grunt.task.run('handlebars');
-        
-        grunt.task.run('uglify');
-    });
+    grunt.registerTask('build', ['jshint', 'less', 'handlebars', 'uglify']);    
+    grunt.registerTask('test', ['connect', 'qunit']);
 }
