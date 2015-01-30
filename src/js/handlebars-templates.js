@@ -200,11 +200,13 @@ this["personaQTemplates"]["searchControls"] = Handlebars.template({"1":function(
 
 
 this["personaQTemplates"]["skillControls"] = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-  var helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
-  return "<div class=\"panel-heading\">\r\n    <h3 class=\"panel-title\">\r\n        <span class=\"glyphicon glyphicon-search\" aria-hidden=\"true\"/> Skill Search\r\n    </h3>\r\n</div>\r\n    \r\n<div class=\"panel-body\">\r\n    <p class=\"exclaim bg-info text-info\">\r\n        <strong>\r\n            <span class=\"glyphicon glyphicon-exclamation-sign\" aria-hidden=\"true\"/> "
+  var stack1, helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = "<div class=\"panel-heading\">\r\n    <h3 class=\"panel-title\">\r\n        <span class=\"glyphicon glyphicon-search\" aria-hidden=\"true\"/> Skill Search\r\n    </h3>\r\n</div>\r\n    \r\n<div class=\"panel-body\">\r\n    <p class=\"exclaim bg-info text-info\">\r\n        <strong>\r\n            <span class=\"glyphicon glyphicon-exclamation-sign\" aria-hidden=\"true\"/> "
     + escapeExpression(((helper = (helper = helpers.exclaim || (depth0 != null ? depth0.exclaim : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"exclaim","hash":{},"data":data}) : helper)))
-    + "\r\n        </strong>\r\n    </p>\r\n                \r\n    <div class=\"row\">\r\n        <div id=\"typeahead-container\" class=\"form-group col-md-12\">\r\n            <label for=\"skill-search-text-field\"><span class=\"glyphicon glyphicon-fire\" aria-hidden=\"true\"/> Skill</label>\r\n            <input type=\"text\" id=\"skill-search-text-field\" name=\"skill-search-text-field\" class=\"form-control typeahead\">\r\n        </div>\r\n    </div>\r\n                \r\n    <div class=\"row\">\r\n        <div id=\"autocomplete-container\" class=\"col-md-12\">\r\n        </div>\r\n    </div>\r\n</div>";
-},"useData":true});
+    + "\r\n        </strong>\r\n    </p>\r\n                \r\n    <div class=\"row\">\r\n        <div id=\"typeahead-container\" class=\"form-group col-md-12\">\r\n            <label for=\"skill-search-text-field\"><span class=\"glyphicon glyphicon-fire\" aria-hidden=\"true\"/> Skill</label>\r\n            <input type=\"text\" id=\"skill-search-text-field\" name=\"skill-search-text-field\" class=\"form-control typeahead\">\r\n        </div>\r\n    </div>\r\n                \r\n    <div class=\"row\">\r\n        <div id=\"autocomplete-container\" class=\"col-md-12\">\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n";
+  stack1 = this.invokePartial(partials.credits, '', 'credits', depth0, undefined, helpers, partials, data);
+  if (stack1 != null) { buffer += stack1; }
+  return buffer;
+},"usePartial":true,"useData":true});
 
 
 
