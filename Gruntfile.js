@@ -97,8 +97,6 @@ module.exports = function(grunt) {
         
         grunt.task.run('jshint');
         
-        grunt.task.run('imagemin');
-        
         grunt.task.run('less');
         
         grunt.task.run('handlebars');
