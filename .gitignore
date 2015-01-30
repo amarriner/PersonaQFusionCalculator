@@ -341,3 +341,4 @@
 /bootstrap-3.3.2/test-infra/uncached-npm-install.sh
 /node_modules
 /npm-debug.log
+/jshint.log

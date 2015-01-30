@@ -1,12 +1,12 @@
 var activePersona;
 
-var deepLinks = {}
-deepLinks["index"] = function() { activateSearch(); };
-deepLinks["search"] = function() { activateSearch(); };
-deepLinks["ingredients"] = function() { activateIngredients(); };
-deepLinks["skills"] = function(name) { activateSkills(unslugify(name)); };
-deepLinks["personas"] = function() { activatePersonas(); };
-deepLinks["arcana"] = function(name) { activateArcana(personaQ["arcana"].indexOf(unslugify(name))); };
+var deepLinks = {};
+deepLinks.index = function() { activateSearch(); };
+deepLinks.search = function() { activateSearch(); };
+deepLinks.ingredients = function() { activateIngredients(); };
+deepLinks.skills = function(name) { activateSkills(unslugify(name)); };
+deepLinks.personas = function() { activatePersonas(); };
+deepLinks.arcana = function(name) { activateArcana(personaQ.arcana.indexOf(unslugify(name))); };
                     
 /*
  * Initial pageload stuff
@@ -18,14 +18,14 @@ $(document).ready(function() {
                 
     // Fix issue where bootstrap menu doesn't close on mobile when a link is clicked
     $(document).on('click','.navbar-collapse.in',function(e) {
-        if( $(e.target).is('a') && $(e.target).attr('class') != 'dropdown-toggle' ) {
+        if( $(e.target).is('a') && $(e.target).attr('class') !== 'dropdown-toggle' ) {
             $(this).collapse('hide');
         }
     });
                         
     // Filling out arcana dropdown
     $("#arcana-navbar").empty();
-    $.each(personaQ["arcana"].sort(), function(i) {
+    $.each(personaQ.arcana.sort(), function(i) {
         $("#arcana-navbar").append($("<li/>").append($('<a class="deep-link" href="#/arcana/' + slugify(this) + '"/>').text(this)));
     });
                 
@@ -48,12 +48,12 @@ function goDeepLink(link) {
     var key = link.replace(/^\//, "");
     console.log(key + " " + link);
     
-    if (typeof key == "undefined" || key == "") {
+    if (typeof key === "undefined" || key === "") {
         key = "index";
     }
     console.log(key + " " + link);
     
-    var param = undefined;
+    var param;
     key = key.split("/")[0];
     
     console.log(key + " " + link);
@@ -88,8 +88,8 @@ function slugify(name) {
 function unslugify(name) {
     var r = "";
     $.each(name.split("-"), function() {
-        if (typeof this != "undefined") {
-            if (r != "") {
+        if (typeof this !== "undefined") {
+            if (r !== "") {
                 r += " ";
             }
         
@@ -105,10 +105,10 @@ function unslugify(name) {
 function registerHelpers() {
     // eachSortedSkills
     Handlebars.registerHelper('eachSortedSkills', function(skills, options) {
-        var s = new Array();
+        var s = [];
         
         $.each(skills.sort(skillSortNameAsc), function(i) {
-            s.push(getSkillByName(personaQ["skills"][this]));
+            s.push(getSkillByName(personaQ.skills[this]));
         });
             
         return options.fn(s);
@@ -116,23 +116,23 @@ function registerHelpers() {
     
     // eachSortedPersonas
     Handlebars.registerHelper('eachSortedPersonas', function(options) {
-        return options.fn(personaQ["personas"].sort(personaSortNameAsc));
+        return options.fn(personaQ.personas.sort(personaSortNameAsc));
     });
     
     // getArcanaName
     Handlebars.registerHelper('getArcanaName', function(arcana) {
-        return personaQ["arcana"][arcana];
+        return personaQ.arcana[arcana];
     });
 
     // ifEq
     Handlebars.registerHelper('ifEq', function(a, b, options) {
-        return (a == b ? options.fn(this) : options.inverse(this));
+        return (a === b ? options.fn(this) : options.inverse(this));
     });
 }
 
 function registerPartials() {
-    Handlebars.registerPartial("persona-list-item", personaQTemplates["persona-list-item-partial"]);
-    Handlebars.registerPartial("credits", personaQTemplates["credits-partial"]);
+    Handlebars.registerPartial("persona-list-item", personaQTemplates.personaListItemPartial);
+    Handlebars.registerPartial("credits", personaQTemplates.creditsPartial);
 }
 
 /* -------------- Activation Functions for setting up various views ---------------------- */
@@ -142,7 +142,7 @@ function registerPartials() {
  */ 
 function activateSearch() {    
                                                     
-    $("#select").html(personaQTemplates["search-controls"]({
+    $("#select").html(personaQTemplates.searchControls({
         exclaim: "Select up to three personas"
     }));
     
@@ -159,7 +159,7 @@ function activateSearch() {
  * Build controls for getting fusion ingredients 
  */
 function activateIngredients() {
-    $("#select").html(personaQTemplates["ingredients-controls"]({
+    $("#select").html(personaQTemplates.ingredientsControls({
         exclaim: "Find fusion ingredients for a Persona"
     }));
     $("#fusion-result").empty();
@@ -172,8 +172,8 @@ function activateIngredients() {
 function activateArcana(arcana) {
     $("#fusion-result").empty();
     
-    $("#select").html(personaQTemplates["arcana-list"]({
-        arcana: personaQ["arcana"][arcana],
+    $("#select").html(personaQTemplates.arcanaList({
+        arcana: personaQ.arcana[arcana],
         personas: getPersonasByArcana(arcana),
         title: true
     }));
@@ -185,16 +185,16 @@ function activateArcana(arcana) {
 function activatePersonas() {
     $("#fusion-result").empty();
     
-    var letters = new Object();
-    $.each(personaQ["personas"].sort(personaSortNameAsc), function(i) {
-        if (! letters[this["name"][0]]) {
-            letters[this["name"][0]] = new Array();
+    var letters = {};
+    $.each(personaQ.personas.sort(personaSortNameAsc), function(i) {
+        if (! letters[this.name[0]]) {
+            letters[this.name[0]] = [];
         }
         
-        letters[this["name"][0]].push(this);
+        letters[this.name[0]].push(this);
     });
     
-    $("#select").html(personaQTemplates["accordion-persona-list"]({
+    $("#select").html(personaQTemplates.accordionPersonaList({
         letters: letters
     }));
     
@@ -215,7 +215,7 @@ function activateSkills(name) {
     console.log(name);
     $("#fusion-result").empty();
     
-    $("#select").html(personaQTemplates["skill-controls"]({
+    $("#select").html(personaQTemplates.skillControls({
         exclaim: "Start typing a skill name to search"
     }));
 
@@ -227,21 +227,21 @@ function activateSkills(name) {
     {
         name: 'skills',
         displayKey: 'value',
-        source: substringMatcher(personaQ["skills"].sort())
+        source: substringMatcher(personaQ.skills.sort())
     });
                 
     $("#skill-search-text-field").focus().bind('typeahead:selected', function() {
-        var a = "/skills/" + slugify($(this).val())
+        var a = "/skills/" + slugify($(this).val());
         $.address.path(a);
         goDeepLink(a);
     });
     
-    if (typeof name != "undefined" && name != "") {
+    if (typeof name !== "undefined" && name !== "") {
         
         skill = getSkillByName(name);
         
         if (skill) {
-            $("#fusion-result").html(personaQTemplates["skill-details"]({
+            $("#fusion-result").html(personaQTemplates.skillDetails({
                 skill: skill,
                 slug: slugify(name),
                 wrapper: true
@@ -281,7 +281,7 @@ var substringMatcher = function(strs) {
  * Put appropriate skill details in modal, then show it
  */
 function showSkillModal(skillName) {
-    $("#skill-modal-content").html(personaQTemplates["skill-details"]({
+    $("#skill-modal-content").html(personaQTemplates.skillDetails({
         skill: getSkillByName(skillName)
     }));
     
@@ -297,40 +297,40 @@ function fuse() {
     var p2 = getPersonaByName($("#persona2").val());
     var p3 = getPersonaByName($("#persona3").val());
     
-    var personas = new Array();
+    var personas = [];
     
-    if (p1 != p2 && ! p3) {
+    if (p1 !== p2 && ! p3) {
         personas = getNormalFusion(p1, p2);
     }
-    else if (p1 && p2 && p3 && (p1 != p2 && p1 != p3 && p2 != p3)) {
+    else if (p1 && p2 && p3 && (p1 !== p2 && p1 !== p3 && p2 !== p3)) {
         personas = getTripleFusion(p1, p2, p3);
     }
 
     if (personas.length > 0) {
         console.log(" - Outputting personas (" + activePersona + ")");
             
-        $("#fusion-result").html(personaQTemplates["persona-list"]({
+        $("#fusion-result").html(personaQTemplates.personaList({
             active: activePersona,
-            arcana: personaQ["arcana"][personas[0]["arcana"]],
+            arcana: personaQ.arcana[personas[0].arcana],
             personas: personas,
-            slug: slugify(personaQ["arcana"][personas[0]["arcana"]]),
+            slug: slugify(personaQ.arcana[personas[0].arcana]),
             title: true
         }));
     }
 }
 
 function getFusion(a, b, type) {
-    type = (typeof type == "undefined" || $.inArray(type, ["normal", "triple"]) < 0) ? "normal" : type;
+    type = (typeof type === "undefined" || $.inArray(type, ["normal", "triple"]) < 0) ? "normal" : type;
 
-    console.log("Getting [" + type + "] fusion for arcana: " + personaQ["arcana"][a] + ", " + personaQ["arcana"][b]);
+    console.log("Getting [" + type + "] fusion for arcana: " + personaQ.arcana[a] + ", " + personaQ.arcana[b]);
     var r = false;
 
-    if (a != b || a == b) {
-        $.each(personaQ["fusions"][type], function() {
+    if (a !== b || a === b) {
+        $.each(personaQ.fusions[type], function() {
             
-            if ($.inArray(a, this["arcana"]) >= "0" && $.inArray(b, this["arcana"]) >= "0") {
-                r = this["result"];
-                console.log(" - [" + type + "] " + personaQ["arcana"][a] + " fused with " + personaQ["arcana"][b] + " results in " + personaQ["arcana"][r]);
+            if ($.inArray(a, this.arcana) >= "0" && $.inArray(b, this.arcana) >= "0") {
+                r = this.result;
+                console.log(" - [" + type + "] " + personaQ.arcana[a] + " fused with " + personaQ.arcana[b] + " results in " + personaQ.arcana[r]);
             
             }
         });
@@ -340,24 +340,24 @@ function getFusion(a, b, type) {
 }
     
 function getNormalFusion(a, b) {
-    console.log("Getting normal fusion for: " + a["name"] + ", " + b["name"]);
+    console.log("Getting normal fusion for: " + a.name + ", " + b.name);
     
-    var arcana = getFusion(a["arcana"], b["arcana"]);
+    var arcana = getFusion(a.arcana, b.arcana);
+    var persona;
+    var personas = [];
     
     if (arcana) {
         activePersona = undefined;
-        var persona = undefined;
-        var personas = new Array();
         
-        var avg = (a["level"] + b["level"]) / 2;
-        $.each(personaQ["personas"].sort(personaSortLevelAsc), function(i) {
-            if (this["arcana"] == arcana) {
-                console.log(" - Found: " + this["name"]);
+        var avg = (a.level + b.level) / 2;
+        $.each(personaQ.personas.sort(personaSortLevelAsc), function(i) {
+            if (this.arcana === arcana) {
+                console.log(" - Found: " + this.name);
                 personas.push(this);
                 
-                if (this["level"] > avg && (typeof activePersona == "undefined")) {
-                    activePersona = this["name"];
-                    personas[personas.length - 1]["active"] = true;
+                if (this.level > avg && (typeof activePersona === "undefined")) {
+                    activePersona = this.name;
+                    personas[personas.length - 1].active = true;
                     console.log(' - Active persona: ' + activePersona);
                 }
             }
@@ -368,29 +368,29 @@ function getNormalFusion(a, b) {
 }
 
 function getTripleFusion(a, b, c) {
-    console.log("Getting triple fusion for: " + a["name"] + ", " + b["name"] + ", " + c["name"]);
+    console.log("Getting triple fusion for: " + a.name + ", " + b.name + ", " + c.name);
     var r = false;
     
     activePersona = undefined;
     var personas = sortPersonas(a, b, c);
-    var arcana = getFusion(personas[0]["arcana"], personas[1]["arcana"]);
-    r = getFusion(arcana, personas[2]["arcana"], "triple");
-    r = (typeof r == "undefined") ? false : r;
+    var arcana = getFusion(personas[0].arcana, personas[1].arcana);
+    r = getFusion(arcana, personas[2].arcana, "triple");
+    r = (typeof r === "undefined") ? false : r;
     
-    personas = new Array();
+    personas = [];
     if (r) {
-        console.log(" - Result: " + personaQ["arcana"][r]);
+        console.log(" - Result: " + personaQ.arcana[r]);
         
-        var avg = (a["level"], b["level"], c["level"]) / 3;
-        $.each(personaQ["personas"].sort(personaSortLevelAsc), function(i) {
-            if (this["arcana"] == arcana && [a, b, c].indexOf(this) < 0) {
-                console.log(" - Found: " + this["name"]);
+        var avg = (a.level, b.level, c.level) / 3;
+        $.each(personaQ.personas.sort(personaSortLevelAsc), function(i) {
+            if (this.arcana === arcana && [a, b, c].indexOf(this) < 0) {
+                console.log(" - Found: " + this.name);
                 personas.push(this);
                 
-                if (this["level"] > avg && (typeof activePersona == "undefined")) {
-                    activePersona = this["name"];
-                    personas[personas.length - 1]["active"] = true;
-                    console.log(" - Active persona: " + this["name"]);
+                if (this.level > avg && (typeof activePersona === "undefined")) {
+                    activePersona = this.name;
+                    personas[personas.length - 1].active = true;
+                    console.log(" - Active persona: " + this.name);
                 }
             }
         });
@@ -405,12 +405,12 @@ function getIngredients() {
     $("#fusion-result").empty();
     
     var persona = getPersonaByName($("#fused").val());
-    console.log("Finding ingredients for " + persona["name"]);
+    console.log("Finding ingredients for " + persona.name);
     
-    var results = new Array();
-    $.each(personaQ["fusions"]["normal"], function(i, value) {
-        if (this["result"] == persona["arcana"]) {
-            console.log(this["arcana"]);
+    var results = [];
+    $.each(personaQ.fusions.normal, function(i, value) {
+        if (this.result === persona.arcana) {
+            console.log(this.arcana);
             results.push(this);    
         }
     });
@@ -418,19 +418,19 @@ function getIngredients() {
     if (results.length > 0) {
         console.log("Found results");
         
-        $("#fusion-result").html(personaQTemplates["ingredients-list"]({
-            arcana: personaQ["arcana"][persona["arcana"]],
+        $("#fusion-result").html(personaQTemplates.ingredientsList({
+            arcana: personaQ.arcana[persona.arcana],
             results: results
         }));
     }
 }
 
 function getPersonasByArcana(arcana) {
-    console.log("Getting personas by arcana (" + personaQ["arcana"][arcana] + ")");
+    console.log("Getting personas by arcana (" + personaQ.arcana[arcana] + ")");
     
-    var personas = new Array();
-    $.each(personaQ["personas"], function(i, value) {
-        if (this["arcana"] == arcana) {
+    var personas = [];
+    $.each(personaQ.personas, function(i, value) {
+        if (this.arcana === arcana) {
             personas.push(this);
         }
     });
@@ -442,10 +442,10 @@ function getPersonaByName(name) {
     console.log("Getting persona by name (" + name + ")");
     var r = false;
     
-    $.each(personaQ["personas"], function() {
-        if (this["name"] == name) {
+    $.each(personaQ.personas, function() {
+        if (this.name === name) {
             r = this;
-            console.log(" - Found " + this["name"]);
+            console.log(" - Found " + this.name);
         }
     });
     
@@ -456,7 +456,7 @@ function getSkillByName(name) {
     var r = false;
     
     $.each(personaQSkills, function(i) {
-        if (this["name"] == name) {
+        if (this.name === name) {
             r = this;
         }
     });
@@ -467,32 +467,32 @@ function getSkillByName(name) {
 /* ----------------------- Sorting Functions ----------------------- */
 
 function personaSortArcanaAsc(a, b) {
-    return a["arcana"] - b["arcana"];
+    return a.arcana - b.arcana;
 }
 
 function personaSortArcanaDesc(a,b) {
-    return b["arcana"] - a["arcana"];
+    return b.arcana - a.arcana;
 }
 
 function personaSortLevelAsc(a, b) {
-    return a["level"] - b["level"];
+    return a.level - b.level;
 }
 
 function personaSortLevelDesc(a, b) {
-    return b["level"] - a["level"];
+    return b.level - a.level;
 }
 
 function personaSortNameAsc(a, b) {
-    var end = Math.min(a["name"].length, b["name"].length);
+    var end = Math.min(a.name.length, b.name.length);
     var ndx = -1;
     
     for (var i = 0; i < end; i++) {
-        if (a["name"][i] != b["name"][i] && ndx == -1) {
+        if (a.name[i] !== b.name[i] && ndx === -1) {
             ndx = i;
         }
     }
     
-    if (ndx == -1) {
+    if (ndx === -1) {
         ndx = end;
         
         if (a.length <= ndx) {
@@ -504,20 +504,20 @@ function personaSortNameAsc(a, b) {
         }
     }
     
-    return a["name"].charCodeAt(ndx) - b["name"].charCodeAt(ndx);
+    return a.name.charCodeAt(ndx) - b.name.charCodeAt(ndx);
 }
 
 function personaSortNameDesc(a, b) {
-    var end = Math.min(a["name"].length, b["name"].length);
+    var end = Math.min(a.name.length, b.name.length);
     var ndx = -1;
     
     for (var i = 0; i < end; i++) {
-        if (a["name"][i] != b["name"][i] && ndx == -1) {
+        if (a.name[i] !== b.name[i] && ndx === -1) {
             ndx = i;
         }
     }
     
-    if (ndx == -1) {
+    if (ndx === -1) {
         ndx = end;
         
         if (a.length <= ndx) {
@@ -529,20 +529,20 @@ function personaSortNameDesc(a, b) {
         }
     }
     
-    return b["name"].charCodeAt(ndx) - a["name"].charCodeAt(ndx);
+    return b.name.charCodeAt(ndx) - a.name.charCodeAt(ndx);
 }
 
 function skillSortNameAsc(a, b) {
-    var end = Math.min(personaQ["skills"][a].length, personaQ["skills"][b].length);
+    var end = Math.min(personaQ.skills[a].length, personaQ.skills[b].length);
     var ndx = -1;
     
     for (var i = 0; i < end; i++) {
-        if (personaQ["skills"][a][i] != personaQ["skills"][b][i] && ndx == -1) {
+        if (personaQ.skills[a][i] !== personaQ.skills[b][i] && ndx === -1) {
             ndx = i;
         }
     }
     
-    if (ndx == -1) {
+    if (ndx === -1) {
         ndx = end;
         
         if (a.length <= ndx) {
@@ -554,19 +554,19 @@ function skillSortNameAsc(a, b) {
         }
     }
     
-    return personaQ["skills"][a].charCodeAt(ndx) - personaQ["skills"][b].charCodeAt(ndx);
+    return personaQ.skills[a].charCodeAt(ndx) - personaQ.skills[b].charCodeAt(ndx);
 }
 
 function sortPersonas(a, b, c) {
-    console.log("Sorting " + a["name"] + ", " + b["name"] + ", " + c["name"]);
+    console.log("Sorting " + a.name + ", " + b.name + ", " + c.name);
     
-    var p = new Array(a, b, c).sort(personaSortLevelAsc);
+    var p = [a, b, c].sort(personaSortLevelAsc);
     
-    console.log(" - Level Sort: " + p[0]["name"] + ", " + p[1]["name"] + ", " + p[2]["name"]);
+    console.log(" - Level Sort: " + p[0].name + ", " + p[1].name + ", " + p[2].name);
 
-    if (p[1]["level"] == p[2]["level"]) {
+    if (p[1].level === p[2].level) {
         p = new Array(a) + new Array(b, c).sort(personaSortArcanaDesc);
-        console.log(" - Arcana Sort: " + + p[0]["name"] + ", " + p[1]["name"] + ", " + p[2]["name"]);
+        console.log(" - Arcana Sort: " + p[0].name + ", " + p[1].name + ", " + p[2].name);
     }
     
     return p;
