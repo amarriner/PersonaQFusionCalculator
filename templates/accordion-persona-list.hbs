@@ -1,0 +1,29 @@
+<div class="panel-heading">
+    <h3 class="panel-title">
+        <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Persona List
+    </h3>
+</div>
+            
+<div class="panel-body">
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+        {{#each letters}}
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="tab-{{@key}}">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{@key}}" aria-controls="collapse{{@key}}">
+                            {{@key}}</a>
+                    </h4>
+                </div>
+                <div id="collapse{{@key}}" class="panel-collapse collapse" role="tabpanel" aria-labelleyby="tab-{{@key}}">
+                    <ul id="personas{{@key}}" class="panel-body list-group">
+                        {{#each this}}
+                            {{> persona-list-item }}    
+                        {{/each}}
+                    </ul>
+                </div>
+            </div>
+        {{/each}}
+    </div>
+</div>
+    
+{{> credits}}

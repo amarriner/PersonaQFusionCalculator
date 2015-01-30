@@ -339,3 +339,4 @@
 /bootstrap-3.3.2/test-infra/requirements.txt
 /bootstrap-3.3.2/test-infra/s3_cache.py
 /bootstrap-3.3.2/test-infra/uncached-npm-install.sh
+/node_modules

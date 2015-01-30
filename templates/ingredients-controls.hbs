@@ -1,0 +1,36 @@
+<div class="panel-heading">
+    <h3 class="panel-title">
+        <span class="glyphicon glyphicon-search" aria-hidden="true"/> Ingredients
+    </h3>
+</div>
+            
+<div class="panel-body">
+    <p class="exclaim bg-info text-info">
+        <strong>
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"/> {{exclaim}}
+        </strong>
+    </p>
+                
+    <div class="row">
+        <div id="f-top" class="form-group col-md-12">
+            <label for="fused"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Persona</label>
+            <select id="fused" class="form-control">
+                 {{#eachSortedPersonas}}
+                    {{#each this}}
+                        <option value="{{name}}">{{name}}</option>
+                    {{/each}}
+                {{/eachSortedPersonas}}
+            </select>
+        </div>
+    </div>
+            
+    <div class="row text-center">
+        <strong class="text-info">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> 
+            This function is very much a work in progress!
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        </strong>
+    </div>
+</div>
+    
+{{> credits}}

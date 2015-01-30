@@ -1,0 +1,52 @@
+<div class="panel-heading">
+    <h3 class="panel-title">
+        <span class="glyphicon glyphicon-search" aria-hidden="true"/> Search
+    </h3>
+</div>
+            
+<div class="panel-body">
+    <p class="exclaim bg-info text-info">
+        <strong>
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"/> {{exclaim}}
+        </strong>
+    </p>
+                
+    <div class="row">
+        <div id="p1" class="form-group col-md-4">
+            <label for="persona1"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Persona 1</label>
+            <select id="persona1" class="form-control">
+                {{#eachSortedPersonas}}
+                    {{#each this}}
+                        <option value="{{name}}">{{name}}</option>
+                    {{/each}}
+                {{/eachSortedPersonas}}
+            </select>
+        </div>
+                    
+        <div id="p1" class="form-group col-md-4">
+            <label for="persona2"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Persona 2</label>
+            <select id="persona2" class="form-control">
+                {{#eachSortedPersonas}}
+                    {{#each this}}
+                        <option value="{{name}}">{{name}}</option>
+                    {{/each}}
+                {{/eachSortedPersonas}}
+            </select>
+        </div>
+
+        <div id="p1" class="form-group col-md-4">
+            <label for="persona3"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Persona 3</label>
+            <select id="persona3" class="form-control">
+                <option value="">NONE</option>
+                {{#eachSortedPersonas}}
+                    {{#each this}}
+                        <option value="{{name}}">{{name}}</option>
+                    {{/each}}
+                {{/eachSortedPersonas}}
+            </select>
+        </div>
+
+    </div>    
+</div>
+            
+{{> credits}}

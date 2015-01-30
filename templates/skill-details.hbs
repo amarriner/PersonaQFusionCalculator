@@ -1,0 +1,48 @@
+<div class="modal-header panel-heading">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>    
+    <h4 class="modal-title text-uppercase" id="skill-modal-label">
+        <span class="glyphicon glyphicon-fire" aria-hidden="true"></span> {{skill.name}}
+    </h4>
+</div>
+                
+<div id="skill-modal-body" class="modal-body panel-body">
+    <div class="row">
+        <div class="col-xs-3 col-sm-2 text-info">
+            <strong>
+                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Type
+            </strong>
+        </div>
+                    
+        <div class="col-xs-9">{{skill.type}}</div>
+    </div>
+
+    {{#if skill.range}}
+    <div class="row">
+        <div class="col-xs-3 col-sm-2 text-info">
+            <strong>
+                <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Range
+            </strong>
+        </div>
+        
+        <div class="col-xs-9">{{skill.range}}</div>
+    </div>
+    {{/if}}
+                
+    {{#if skill.cost}}
+    <div class="row">
+        <div class="col-xs-3 col-sm-2 text-info">
+            <strong>
+                <span class="glyphicon glyphicon-yen" aria-hidden="true"></span> Cost
+            </strong>
+        </div>
+                    
+        <div class="col-xs-9">{{skill.cost}}</div>
+    </div>
+    {{/if}}
+</div>
+            
+<div id="skill-modal-footer" class="modal-footer panel-footer">
+    <p>
+        <em>{{skill.description}}</em>
+    </p>
+</div>

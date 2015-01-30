@@ -38,8 +38,8 @@ function registerHelpers() {
 }
 
 function registerPartials() {
-    Handlebars.registerPartial("persona-list-item", $("#persona-list-item-partial").html());
-    Handlebars.registerPartial("credits", $("#credits-partial").html());
+    Handlebars.registerPartial("persona-list-item", personaQTemplates["persona-list-item-partial"]);
+    Handlebars.registerPartial("credits", personaQTemplates["credits-partial"]);
 }
 
 /* -------------- Activation Functions for setting up various views ---------------------- */
@@ -49,7 +49,7 @@ function registerPartials() {
  */ 
 function activateSearch() {    
                                                     
-    $("#select").html(Templates["search-controls"]({
+    $("#select").html(personaQTemplates["search-controls"]({
         exclaim: "Select up to three personas"
     }));
     
@@ -66,7 +66,7 @@ function activateSearch() {
  * Build controls for getting fusion ingredients 
  */
 function activateIngredients() {
-    $("#select").html(Templates["ingredients-controls"]({
+    $("#select").html(personaQTemplates["ingredients-controls"]({
         exclaim: "Find fusion ingredients for a Persona"
     }));
     $("#fusion-result").empty();
@@ -79,7 +79,7 @@ function activateIngredients() {
 function activateArcana(arcana) {
     $("#fusion-result").empty();
     
-    $("#select").html(Templates["arcana-list"]({
+    $("#select").html(personaQTemplates["arcana-list"]({
         arcana: personaQ["arcana"][arcana],
         personas: getPersonasByArcana(arcana),
         title: true
@@ -103,7 +103,7 @@ function activatePersonas() {
         letters[this["name"][0]].push(this);
     });
     
-    $("#select").html(Templates["accordion-persona-list"]({
+    $("#select").html(personaQTemplates["accordion-persona-list"]({
         letters: letters
     }));
     
@@ -123,7 +123,7 @@ function activatePersonas() {
 function activateSkills() {    
     $("#fusion-result").empty();
     
-    $("#select").html(Templates["skill-controls"]({
+    $("#select").html(personaQTemplates["skill-controls"]({
         exclaim: "Start typing a skill name to search"
     }));
 
@@ -171,7 +171,7 @@ var substringMatcher = function(strs) {
  * Put appropriate skill details in modal, then show it
  */
 function showSkillModal(skillName) {
-    $("#skill-modal-content").html(Templates["skill-details"]({
+    $("#skill-modal-content").html(personaQTemplates["skill-details"]({
         skill: getSkillByName(skillName)
     }));
     
@@ -199,7 +199,7 @@ function fuse() {
     if (personas.length > 0) {
         console.log(" - Outputting personas (" + activePersona + ")");
             
-        $("#fusion-result").html(Templates["persona-list"]({
+        $("#fusion-result").html(personaQTemplates["persona-list"]({
             active: activePersona,
             arcana: personaQ["arcana"][personas[0]["arcana"]],
             personas: personas,
@@ -307,7 +307,7 @@ function getIngredients() {
     if (results.length > 0) {
         console.log("Found results");
         
-        $("#fusion-result").html(Templates["ingredients-list"]({
+        $("#fusion-result").html(personaQTemplates["ingredients-list"]({
             arcana: personaQ["arcana"][persona["arcana"]],
             results: results
         }));

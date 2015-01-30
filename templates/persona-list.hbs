@@ -1,0 +1,18 @@
+<ul class="list-group">
+    <li class="row list-group-item active">
+        <div class="row">
+            <div class="col-xs-4 col-md-6">
+                {{#if title}}
+                    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> <span class="hidden-xs">Arcana: </span>{{arcana}}
+                {{/if}}
+            </div>
+            <div class="col-xs-1">Lvl</div>
+            <div class="col-xs-1">HP</div>
+            <div class="col-xs-1">SP</div>
+        </div>
+    </li>
+    
+    {{#each personas}}
+        {{> persona-list-item}}
+    {{/each}}
+</ul>

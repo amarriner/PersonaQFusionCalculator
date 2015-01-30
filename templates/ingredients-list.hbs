@@ -1,0 +1,17 @@
+<ul class="list-group">
+    <li class="row list-group-item active">
+        <div class="row">
+            <div class="col-xs-12">
+                <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> 
+                <span class="hidden-xs">Arcana: </span>
+                {{arcana}}
+            </div>
+        </div>
+    </li>
+    {{#each results}}
+        <li class="row list-group-item">
+            <div class="col-md-6">{{getArcanaName this.arcana.[0]}}</div>
+            <div class="col-md-6">{{getArcanaName this.arcana.[1]}}</div>
+        </li>
+    {{/each}}
+</ul>

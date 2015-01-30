@@ -1,0 +1,21 @@
+<li class="row list-group-item{{#ifEq @root.active name}} list-group-item-info{{/ifEq}}">
+    <div class="col-xs-4 col-md-6">{{name}}</div>
+    <div class="col-xs-1">{{level}}</div>
+    <div class="col-xs-1">{{hp}}</div>
+    <div class="col-xs-1">{{sp}}</div>
+                
+    <div class="col-xs-3 text-right">
+        <div class="dropdown">
+            <button class="btn btn-primary btn-xs" data-toggle="dropdown" aria-expanded="false">
+                <span class="glyphicon glyphicon-fire" aria-hidden="true"></span> Skills <li class="caret"></li>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                {{#eachSortedSkills skills}}
+                    {{#each this}}
+                        <li><a href="#" onclick="showSkillModal('{{this.name}}');"><abbr title="{{this.description}}">{{this.name}}</abbr></a></li>
+                    {{/each}}
+                {{/eachSortedSkills}}
+            </ul>
+        </div>
+    </div>
+</li>
