@@ -43,7 +43,7 @@ module.exports = function(grunt) {
                     expand: true,
                     cwd: 'src/images/',
                     src: ['**/*.{png,jpg,gif}'],
-                    dest: 'images/'
+                    dest: 'dist/images/'
                 }]
             }
         },
@@ -76,7 +76,7 @@ module.exports = function(grunt) {
                     paths: ["less/**/*"]
                 },
                 files: {
-                    "css/application.min.css": "src/less/application.less"
+                    "/dist/css/application.min.css": "src/less/application.less"
                 }
             }
         },
@@ -92,7 +92,7 @@ module.exports = function(grunt) {
         uglify: {
             default: {
                 files: {
-                    'js/application.min.js': [
+                    '/dist/js/application.min.js': [
                         'src/js/persona-q.json', 
                         'src/js/persona-q-skills.json',
                         'src/js/application.js',
@@ -111,6 +111,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-qunit');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     
-    grunt.registerTask('build', ['jshint', 'less', 'handlebars', 'uglify']);    
     grunt.registerTask('test', ['connect', 'qunit']);
+    grunt.registerTask('build', ['jshint', 'test', 'less', 'handlebars', 'uglify']);    
 }
